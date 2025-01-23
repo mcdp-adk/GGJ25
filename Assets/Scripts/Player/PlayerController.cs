@@ -3,22 +3,26 @@ using UnityEngine;
 
 namespace TarodevController
 {
-    /// <summary>
-    /// Hey!
-    /// Tarodev here. I built this controller as there was a severe lack of quality & free 2D controllers out there.
-    /// I have a premium version on Patreon, which has every feature you'd expect from a polished controller. Link: https://www.patreon.com/tarodev
-    /// You can play and compete for best times here: https://tarodev.itch.io/extended-ultimate-2d-controller
-    /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/tarodev
-    /// </summary>
     [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
     public class PlayerController : MonoBehaviour, IPlayerController
     {
-        [SerializeField] private ScriptableStats _stats;
+        [Header("Stats")]
+        [SerializeField] private ScriptableStats defaultStats;  // 默认配置
+        [SerializeField] private ScriptableStats lightBubbleStats; // 在 Light Bubble 中的配置
+        [SerializeField] private ScriptableStats hardBubbleStats; // 在 Hard Bubble 中的配置
+
+        [Header("Layer")]
+        public LayerMask EntityLayer;   // 玩家可以交互的图层
+        public LayerMask TriggerLayer;  // 用于触发的图层
+
+        private ScriptableStats _stats;
         private Rigidbody2D _rb;
         private CapsuleCollider2D _col;
         private FrameInput _frameInput;
         private Vector2 _frameVelocity;
         private bool _cachedQueryStartInColliders;
+
+        private PlayerState playerState = PlayerState.Default;  // 角色状态
 
         #region Interface
 
@@ -28,10 +32,15 @@ namespace TarodevController
 
         #endregion
 
+
+        #region Unity Callbacks
+
         private float _time;
 
         private void Awake()
         {
+            _stats = defaultStats;
+
             _rb = GetComponent<Rigidbody2D>();
             _col = GetComponent<CapsuleCollider2D>();
 
@@ -48,8 +57,8 @@ namespace TarodevController
         {
             _frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C),
-                JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C),
+                JumpDown = Input.GetButtonDown("Jump"),
+                JumpHeld = Input.GetButton("Jump"),
                 Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
             };
 
@@ -73,12 +82,49 @@ namespace TarodevController
             HandleJump();
             HandleDirection();
             HandleGravity();
-            
+
             ApplyMovement();
         }
 
+        #endregion
+
+
+        #region Trigger
+
+        // 进入 Trigger Layer 后，切换配置
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if ((TriggerLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                switch (other.tag)
+                {
+                    case "LightBubble":
+                        playerState = PlayerState.isInLightBubble;
+                        _stats = lightBubbleStats;
+                        break;
+                    case "HardBubble":
+                        playerState = PlayerState.isHardBubble;
+                        _stats = hardBubbleStats;
+                        break;
+                }
+            }
+        }
+
+        // 离开 Trigger Layer 后，切换配置
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if ((TriggerLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                playerState = PlayerState.Default;
+                _stats = defaultStats;
+            }
+        }
+
+        #endregion
+
+
         #region Collisions
-        
+
         private float _frameLeftGrounded = float.MinValue;
         private bool _grounded;
 
@@ -87,8 +133,8 @@ namespace TarodevController
             Physics2D.queriesStartInColliders = false;
 
             // Ground and Ceiling
-            bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, _stats.GrounderDistance, ~_stats.PlayerLayer);
-            bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, _stats.GrounderDistance, ~_stats.PlayerLayer);
+            bool groundHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.down, _stats.GrounderDistance, EntityLayer);
+            bool ceilingHit = Physics2D.CapsuleCast(_col.bounds.center, _col.size, _col.direction, 0, Vector2.up, _stats.GrounderDistance, EntityLayer);
 
             // Hit a Ceiling
             if (ceilingHit) _frameVelocity.y = Mathf.Min(0, _frameVelocity.y);
@@ -190,19 +236,12 @@ namespace TarodevController
         #region Others
 
         private void ApplyMovement() => _rb.velocity = _frameVelocity;
-
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            if (_stats == null) Debug.LogWarning("Please assign a ScriptableStats asset to the Player Controller's Stats slot", this);
-        }
-#endif
     }
 
-        #endregion
+    #endregion
 
 
-        #region Defines
+    #region Defines
 
     public struct FrameInput
     {
@@ -217,6 +256,13 @@ namespace TarodevController
 
         public event Action Jumped;
         public Vector2 FrameInput { get; }
+    }
+
+    public enum PlayerState
+    {
+        Default,
+        isInLightBubble,
+        isHardBubble
     }
 
     #endregion

@@ -5,9 +5,6 @@ namespace TarodevController
     [CreateAssetMenu]
     public class ScriptableStats : ScriptableObject
     {
-        [Header("LAYERS")] [Tooltip("Set this to the layer your player is on")]
-        public LayerMask PlayerLayer;
-
         [Header("INPUT")] [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
         public bool SnapInput = true;
 
@@ -20,28 +17,28 @@ namespace TarodevController
         [Header("MOVEMENT")] [Tooltip("The top horizontal movement speed")]
         public float MaxSpeed = 14;
 
-        [Tooltip("The player's capacity to gain horizontal speed")]
+        [Tooltip("水平加速度")]
         public float Acceleration = 120;
 
-        [Tooltip("The pace at which the player comes to a stop")]
+        [Tooltip("地面阻力")]
         public float GroundDeceleration = 60;
 
-        [Tooltip("Deceleration in air only after stopping input mid-air")]
+        [Tooltip("空气阻力")]
         public float AirDeceleration = 30;
 
-        [Tooltip("A constant downward force applied while grounded. Helps on slopes"), Range(0f, -10f)]
+        [Tooltip("接地状态下的地面下压力，对斜坡有帮助"), Range(0f, -10f)]
         public float GroundingForce = -1.5f;
 
-        [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
+        [Tooltip("碰撞检测距离"), Range(0f, 0.5f)]
         public float GrounderDistance = 0.05f;
 
         [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
         public float JumpPower = 36;
 
-        [Tooltip("The maximum vertical movement speed")]
+        [Tooltip("最大垂直移动速度")]
         public float MaxFallSpeed = 40;
 
-        [Tooltip("The player's capacity to gain fall speed. a.k.a. In Air Gravity")]
+        [Tooltip("重力加速度")]
         public float FallAcceleration = 110;
 
         [Tooltip("The gravity multiplier added when jump is released early")]
