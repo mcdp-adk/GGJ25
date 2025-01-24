@@ -7,7 +7,8 @@ namespace TarodevController
     {
         #region Input
 
-        [Header("INPUT")] [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
+        [Header("INPUT")]
+        [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
         public bool SnapInput = true;
 
         [Tooltip("Minimum input required before you mount a ladder or climb a ledge. Avoids unwanted climbing using controllers"), Range(0.01f, 0.99f)]
@@ -21,7 +22,8 @@ namespace TarodevController
 
         #region Movement
 
-        [Header("MOVEMENT")] [Tooltip("The top horizontal movement speed")]
+        [Header("MOVEMENT")]
+        [Tooltip("The top horizontal movement speed")]
         public float MaxSpeed = 14;
 
         [Tooltip("水平加速度")]
@@ -44,7 +46,8 @@ namespace TarodevController
 
         #region Jump
 
-        [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
+        [Header("JUMP")]
+        [Tooltip("The immediate velocity applied when jumping")]
         public float JumpPower = 36;
 
         [Tooltip("最大垂直移动速度")]
@@ -52,9 +55,6 @@ namespace TarodevController
 
         [Tooltip("重力加速度")]
         public float FallAcceleration = 110;
-
-        [Tooltip("墙面滑行速度")]
-        public float WallSlideSpeed = 10;
 
         [Tooltip("The gravity multiplier added when jump is released early")]
         public float JumpEndEarlyGravityModifier = 3;
@@ -65,8 +65,32 @@ namespace TarodevController
         [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
         public float JumpBuffer = .2f;
 
+        #endregion
+
+
+        #region Wall
+
+        [Header("WALL")]
         [Tooltip("墙面检测距离"), Range(0f, 0.5f)]
         public float WallerDistance = 0.05f;
+
+        [Tooltip("墙面滑行速度")]
+        public float WallSlideSpeed = 5;
+
+        [Tooltip("墙跳水平力度")]
+        public float WallJumpPowerX = 20f;
+
+        [Tooltip("墙跳垂直力度")]
+        public float WallJumpPowerY = 25f;
+
+        [Tooltip("离开墙面后还能跳跃的时间")]
+        public float WallCoyoteTime = 0.15f;
+
+        [Tooltip("墙跳输入缓冲时间")]
+        public float WallJumpBuffer = 0.2f;
+
+        [Tooltip("墙跳后禁用输入的时间")]
+        public float WallJumpControlDisableTime = 0.2f;
 
         #endregion
     }
