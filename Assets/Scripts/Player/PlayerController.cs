@@ -60,13 +60,12 @@ namespace TarodevController
         {
             // 墙跳后的输入控制
             bool inputEnabled = _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
-            
+
             _frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown("Jump"),
-                JumpHeld = Input.GetButton("Jump"),
-                Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) 
-                                  : Vector2.zero
+                JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J),
+                JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.J),
+                Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero
             };
 
             if (_stats.SnapInput)
@@ -242,11 +241,11 @@ namespace TarodevController
             _wallJumpStartTime = _time;
             _endedJumpEarly = false;
             _wallCoyoteUsable = false;
-            
+
             float directionX = _isTouchingLeftWall ? 1 : -1;
             _frameVelocity.x = directionX * _stats.WallJumpPowerX;
             _frameVelocity.y = _stats.WallJumpPowerY;
-            
+
             Jumped?.Invoke();
         }
 
