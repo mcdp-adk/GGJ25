@@ -5,6 +5,8 @@ namespace TarodevController
     [CreateAssetMenu]
     public class ScriptableStats : ScriptableObject
     {
+        #region Input
+
         [Header("INPUT")] [Tooltip("Makes all Input snap to an integer. Prevents gamepads from walking slowly. Recommended value is true to ensure gamepad/keybaord parity.")]
         public bool SnapInput = true;
 
@@ -13,6 +15,11 @@ namespace TarodevController
 
         [Tooltip("Minimum input required before a left or right is recognized. Avoids drifting with sticky controllers"), Range(0.01f, 0.99f)]
         public float HorizontalDeadZoneThreshold = 0.1f;
+
+        #endregion
+
+
+        #region Movement
 
         [Header("MOVEMENT")] [Tooltip("The top horizontal movement speed")]
         public float MaxSpeed = 14;
@@ -32,6 +39,11 @@ namespace TarodevController
         [Tooltip("碰撞检测距离"), Range(0f, 0.5f)]
         public float GrounderDistance = 0.05f;
 
+        #endregion
+
+
+        #region Jump
+
         [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
         public float JumpPower = 36;
 
@@ -41,6 +53,9 @@ namespace TarodevController
         [Tooltip("重力加速度")]
         public float FallAcceleration = 110;
 
+        [Tooltip("墙面滑行速度")]
+        public float WallSlideSpeed = 10;
+
         [Tooltip("The gravity multiplier added when jump is released early")]
         public float JumpEndEarlyGravityModifier = 3;
 
@@ -49,5 +64,10 @@ namespace TarodevController
 
         [Tooltip("The amount of time we buffer a jump. This allows jump input before actually hitting the ground")]
         public float JumpBuffer = .2f;
+
+        [Tooltip("墙面检测距离"), Range(0f, 0.5f)]
+        public float WallerDistance = 0.05f;
+
+        #endregion
     }
 }
