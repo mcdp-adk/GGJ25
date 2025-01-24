@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: fallstate
+  m_Controller: {fileID: 9100000, guid: 5e117ecd9a944e94d840a5b5715fdacf, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 6399e585a00f9be4fabedb6e420132fd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 6399e585a00f9be4fabedb6e420132fd, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 897eb8627da61d54f82d6859fac23cbf, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 897eb8627da61d54f82d6859fac23cbf, type: 2}
