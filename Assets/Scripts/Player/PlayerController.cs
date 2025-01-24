@@ -315,6 +315,10 @@ namespace TarodevController
         #region Others
 
         private void ApplyMovement() => _rb.velocity = _frameVelocity;
+
+        // Add public properties to access wall contact state
+        public bool IsTouchingLeftWall => _isTouchingLeftWall;
+        public bool IsTouchingRightWall => _isTouchingRightWall;
     }
 
     #endregion

@@ -58,11 +58,9 @@ namespace TarodevController
             if (_player == null) return;
 
             DetectGroundColor();
-
             HandleSpriteFlip();
-
+            HandleAnimationState();
             HandleIdleSpeed();
-
             HandleCharacterTilt();
         }
 
@@ -82,6 +80,33 @@ namespace TarodevController
         {
             var runningTilt = _grounded ? Quaternion.Euler(0, 0, _maxTilt * _player.FrameInput.x) : Quaternion.identity;
             _anim.transform.up = Vector3.RotateTowards(_anim.transform.up, runningTilt * Vector2.up, _tiltSpeed * Time.deltaTime, 0f);
+        }
+
+        private void HandleAnimationState()
+        {
+            // Get player velocity from rigidbody
+            var rb = transform.parent.GetComponent<Rigidbody2D>();
+            if (rb == null) return;
+            
+            // Set vertical velocity parameter
+            _anim.SetFloat(VerticalVelocityKey, rb.velocity.y);
+            
+            // Set horizontal movement parameter
+            _anim.SetFloat(SpeedKey, Mathf.Abs(rb.velocity.x));
+            
+            // Set grounded state
+            _anim.SetBool(GroundedKey, _grounded);
+            
+            // Check if wall sliding (requires accessing player controller component)
+            var controller = transform.parent.GetComponent<PlayerController>();
+            if (controller != null)
+            {
+                var isWallSliding = !_grounded && (
+                    controller.IsTouchingLeftWall && _player.FrameInput.x < 0 ||
+                    controller.IsTouchingRightWall && _player.FrameInput.x > 0
+                );
+                _anim.SetBool(WallSlidingKey, isWallSliding);
+            }
         }
 
         private void OnJumped()
@@ -139,5 +164,8 @@ namespace TarodevController
         private static readonly int GroundedKey = Animator.StringToHash("Grounded");
         private static readonly int IdleSpeedKey = Animator.StringToHash("IdleSpeed");
         private static readonly int JumpKey = Animator.StringToHash("Jump");
+        private static readonly int VerticalVelocityKey = Animator.StringToHash("VerticalVelocity");
+        private static readonly int SpeedKey = Animator.StringToHash("Speed");
+        private static readonly int WallSlidingKey = Animator.StringToHash("WallSliding");
     }
 }
