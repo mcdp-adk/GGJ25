@@ -23,6 +23,10 @@ namespace TarodevController
 
         private PlayerState playerState = PlayerState.OutsideBubble;  // 角色状态
 
+        private float _wallJumpStartTime;
+        private bool _wallJumpToConsume;
+        private bool _wallCoyoteUsable;
+
         #region Interface
 
         public Vector2 FrameInput => _frameInput.Move;
@@ -54,11 +58,15 @@ namespace TarodevController
 
         private void GatherInput()
         {
+            // 墙跳后的输入控制
+            bool inputEnabled = _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
+            
             _frameInput = new FrameInput
             {
                 JumpDown = Input.GetButtonDown("Jump"),
                 JumpHeld = Input.GetButton("Jump"),
-                Move = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"))
+                Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) 
+                                  : Vector2.zero
             };
 
             if (_stats.SnapInput)
@@ -70,6 +78,7 @@ namespace TarodevController
             if (_frameInput.JumpDown)
             {
                 _jumpToConsume = true;
+                _wallJumpToConsume = true;
                 _timeJumpWasPressed = _time;
             }
         }
@@ -140,6 +149,7 @@ namespace TarodevController
             if (!_isTouchingLeftWall && leftWallHit)
             {
                 _isTouchingLeftWall = true;
+                _wallCoyoteUsable = true;
             }
             else if (_isTouchingLeftWall && !leftWallHit)
             {
@@ -150,6 +160,7 @@ namespace TarodevController
             if (!_isTouchingRightWall && rightWallHit)
             {
                 _isTouchingRightWall = true;
+                _wallCoyoteUsable = true;
             }
             else if (_isTouchingRightWall && !rightWallHit)
             {
@@ -195,11 +206,48 @@ namespace TarodevController
         {
             if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y > 0) _endedJumpEarly = true;
 
-            if (!_jumpToConsume && !HasBufferedJump) return;
+            // 先处理普通跳跃
+            if (_jumpToConsume || HasBufferedJump)
+            {
+                if (_grounded || CanUseCoyote)
+                {
+                    ExecuteJump();
+                    _jumpToConsume = false;
+                    _wallJumpToConsume = false;
+                    return;
+                }
+            }
 
-            if (_grounded || CanUseCoyote) ExecuteJump();
+            // 再处理墙跳
+            if (_wallJumpToConsume && CanWallJump())
+            {
+                ExecuteWallJump();
+                _wallJumpToConsume = false;
+                _jumpToConsume = false;
+                return;
+            }
 
             _jumpToConsume = false;
+        }
+
+        private bool CanWallJump()
+        {
+            bool hasWallJumpBuffer = _time < _timeJumpWasPressed + _stats.WallJumpBuffer;
+            bool canUseWallCoyote = _wallCoyoteUsable && _time < _frameLeftWall + _stats.WallCoyoteTime;
+            return hasWallJumpBuffer && ((_isTouchingLeftWall || _isTouchingRightWall) || canUseWallCoyote);
+        }
+
+        private void ExecuteWallJump()
+        {
+            _wallJumpStartTime = _time;
+            _endedJumpEarly = false;
+            _wallCoyoteUsable = false;
+            
+            float directionX = _isTouchingLeftWall ? 1 : -1;
+            _frameVelocity.x = directionX * _stats.WallJumpPowerX;
+            _frameVelocity.y = _stats.WallJumpPowerY;
+            
+            Jumped?.Invoke();
         }
 
         private void ExecuteJump()
