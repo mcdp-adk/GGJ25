@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10b823639e543694d890e5f8a77be1af, type: 3}
-  m_Name: Player Controller
+  m_Script: {fileID: 11500000, guid: f06f61af3376ee14892799a8f24c7cd2, type: 3}
+  m_Name: InsideBubble
   m_EditorClassIdentifier: 
   PlayerLayer:
     serializedVersion: 2
@@ -18,15 +18,15 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
-  MaxSpeed: 14
+  MaxSpeed: 4
   Acceleration: 120
   GroundDeceleration: 60
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
   JumpPower: 36
-  MaxFallSpeed: 40
-  FallAcceleration: 110
+  MaxFallSpeed: 2
+  FallAcceleration: 200
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2
