@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     #region Interface
 
     public Vector2 FrameInput => _frameInput.Move;
+    public Vector2 Velocity => _rb.velocity;
     public event Action<bool, float> GroundedChanged;
     public event Action Jumped;
 
@@ -567,14 +568,6 @@ public struct FrameInput
     public bool JumpDown;
     public bool JumpHeld;
     public Vector2 Move;
-}
-
-public interface IPlayerController
-{
-    public event Action<bool, float> GroundedChanged;
-
-    public event Action Jumped;
-    public Vector2 FrameInput { get; }
 }
 
 public enum PlayerState

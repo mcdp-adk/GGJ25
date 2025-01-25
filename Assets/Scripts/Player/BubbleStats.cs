@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu]
-public class LightBubbleStats : ScriptableStats
+[CreateAssetMenu(fileName = "OutsideBubble", menuName = "Game/InsideBubbleStats")]
+public class InsideBubbleStats : ScriptableStats
 {
     
 }
