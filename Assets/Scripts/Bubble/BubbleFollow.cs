@@ -11,6 +11,7 @@ public class BubbleFollow : MonoBehaviour
     public float airResistance; // 风阻
     private bool canCollide = true; // 标记是否可以碰撞
 
+
     void Start()
     {
         // 查找带有“Player”标签的对象
@@ -36,7 +37,7 @@ public class BubbleFollow : MonoBehaviour
             isFollowing = true;
             transform.position = player.transform.position; // 将圆圈移动到玩家中心
         }
-        
+
     }
     
 

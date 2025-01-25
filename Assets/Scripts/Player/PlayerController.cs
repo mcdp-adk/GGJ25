@@ -502,50 +502,57 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     private void ApplyMovement() => _rb.velocity = _frameVelocity;
 
-    private void GenerateShortPressBubble()
-    {
-        if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
+private void GenerateShortPressBubble()
+{
+    if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
 
-        float direction = _isFacingRight ? 1f : -1f;
-        Vector3 spawnPosition = transform.position + new Vector3(
-            direction * _stats.BubbleGenerateDistanceX,
-            _stats.BubbleGenerateDistanceY,
-            0
+    float direction = _isFacingRight ? 1f : -1f;
+    Vector3 spawnPosition = transform.position + new Vector3(
+        direction * _stats.BubbleGenerateDistanceX,
+        _stats.BubbleGenerateDistanceY,
+        0
+    );
+
+    GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+    
+    // 设置气泡的tag
+    bubble.tag = "GeneratedBubble";
+
+    BubbleController controller = bubble.GetComponent<BubbleController>();
+    
+    if (controller != null)
+    {
+        controller.initialPlayerState(PlayerState.OutsideBubble);
+        
+        Vector2 bubbleVelocity = new Vector2(
+            direction * _stats.BubbleGenerateVelosityX + _frameVelocity.x * 0.5f,
+            _stats.BubbleGenerateVelosityY + _frameVelocity.y * 0.3f
         );
-
-        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
-        BubbleController controller = bubble.GetComponent<BubbleController>();
+        controller.initialBubbleVelosity(bubbleVelocity);
         
-        if (controller != null)
-        {
-            controller.initialPlayerState(PlayerState.OutsideBubble);
-            
-            Vector2 bubbleVelocity = new Vector2(
-                direction * _stats.BubbleGenerateVelosityX + _frameVelocity.x * 0.5f,
-                _stats.BubbleGenerateVelosityY + _frameVelocity.y * 0.3f
-            );
-            controller.initialBubbleVelosity(bubbleVelocity);
-            
-            _currentBubbleCount++;
-            StartCoroutine(DestroyBubbleAfterDelay(bubble));
-        }
+        _currentBubbleCount++;
+        StartCoroutine(DestroyBubbleAfterDelay(bubble));
     }
+}
 
-    private void GenerateLongPressBubble()
+private void GenerateLongPressBubble()
+{
+    if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
+
+    Vector3 spawnPosition = transform.position + new Vector3(0, _stats.BubbleGenerateDistanceY, 0);
+    GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+    
+    // 设置气泡的tag
+    bubble.tag = "GeneratedBubble";
+
+    BubbleController controller = bubble.GetComponent<BubbleController>();
+    if (controller != null)
     {
-        if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
-
-        Vector3 spawnPosition = transform.position + new Vector3(0, _stats.BubbleGenerateDistanceY, 0);
-        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
-        
-        BubbleController controller = bubble.GetComponent<BubbleController>();
-        if (controller != null)
-        {
-            controller.initialPlayerState(PlayerState.InsideBubble);
-            _currentBubbleCount++;
-            StartCoroutine(DestroyBubbleAfterDelay(bubble));
-        }
+        controller.initialPlayerState(PlayerState.InsideBubble);
+        _currentBubbleCount++;
+        StartCoroutine(DestroyBubbleAfterDelay(bubble));
     }
+}
 
     private System.Collections.IEnumerator DestroyBubbleAfterDelay(GameObject bubble)
     {
@@ -553,8 +560,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
         if (bubble != null)
         {
             GameManager.Instance.DestroyGameObject(bubble);
-            _currentBubbleCount = Mathf.Max(0, _currentBubbleCount - 1);
+            //_currentBubbleCount = Mathf.Max(0, _currentBubbleCount - 1);
+           
         }
+        _currentBubbleCount = GameObject.FindGameObjectsWithTag("GeneratedBubble").Length;
     }
 }
 
