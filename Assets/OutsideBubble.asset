@@ -21,7 +21,7 @@ MonoBehaviour:
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  JumpPower: 50
+  JumpPower: 20
   MaxFallSpeed: 40
   FallAcceleration: 110
   JumpEndEarlyGravityModifier: 3
@@ -34,13 +34,13 @@ MonoBehaviour:
   WallCoyoteTime: 0.15
   WallJumpBuffer: 0.1
   WallJumpControlDisableTime: 0.2
-  DashSpeed: 10
+  DashSpeed: 20
   DashDeceleration: 20
   DashDuration: 0.2
-  BubbleGenerateDistanceX: 2
-  BubbleGenerateDistanceY: 1
-  BubbleGenerateVelosityX: 5
-  BubbleGenerateVelosityY: 5
+  BubbleGenerateDistanceX: 1.5
+  BubbleGenerateDistanceY: 0.5
+  BubbleGenerateVelosityX: 2
+  BubbleGenerateVelosityY: 2
   LongPressThreshold: 0.5
   MaxBubbleCount: 1
   BubbleLifetime: 3
