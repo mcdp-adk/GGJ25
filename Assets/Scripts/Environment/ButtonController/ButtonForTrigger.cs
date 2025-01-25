@@ -6,6 +6,7 @@ public class ButtonForDoor : MonoBehaviour
 {
     public GameObject targetObject; // 需要触发脚本变化的目标物体
     private ButtonCallDoor targetScript; // 目标物体上的脚本
+    public Sprite newSprite; // 需要被替换为的图片
 
     void Start()
     {
@@ -23,9 +24,9 @@ public class ButtonForDoor : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("OnTriggerEnter called with: " + other.name); // 添加调试信息
+        Debug.Log("OnTriggerEnter2D called with: " + other.name); // 添加调试信息
 
         if (other.CompareTag("Player")) // 确认碰撞的物体标签
         {
@@ -38,7 +39,7 @@ public class ButtonForDoor : MonoBehaviour
                 SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
                 if (spriteRenderer != null)
                 {
-                    Sprite newSprite = Resources.Load<Sprite>("BUTTON_0");
+              
                     if (newSprite != null)
                     {
                         spriteRenderer.sprite = newSprite;
