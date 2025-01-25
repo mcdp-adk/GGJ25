@@ -362,6 +362,41 @@ public class PlayerController : MonoBehaviour, IPlayerController
     #endregion
 
 
+    #region Public Methods
+
+    public PlayerState GetPlayerState()
+    {
+        return playerState;
+    }
+
+    public bool GetIsGrounded()
+    {
+        return _grounded;
+    }
+
+    public bool GetIsTouchingLeftWall()
+    {
+        return _isTouchingLeftWall;
+    }
+
+    public bool GetIsTouchingRightWall()
+    {
+        return _isTouchingRightWall;
+    }
+
+    public Vector2 GetFrameInput()
+    {
+        return _frameInput.Move;
+    }
+
+    public Vector2 GetFrameVelocity()
+    {
+        return _frameVelocity;
+    }
+
+    #endregion
+
+
     #region Others
 
     private void ApplyMovement() => _rb.velocity = _frameVelocity;
