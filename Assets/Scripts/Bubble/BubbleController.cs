@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BubbleController : MonoBehaviour
 {
+    [SerializeField] private LayerMask DeathLayer;    // 碰撞后销毁的图层
     private Rigidbody2D _rb;
 
     private void Awake()

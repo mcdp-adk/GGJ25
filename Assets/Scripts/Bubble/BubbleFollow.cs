@@ -36,7 +36,9 @@ public class BubbleFollow : MonoBehaviour
             isFollowing = true;
             transform.position = player.transform.position; // 将圆圈移动到玩家中心
         }
+        
     }
+    
 
     void OnTriggerExit2D(Collider2D other)
     {

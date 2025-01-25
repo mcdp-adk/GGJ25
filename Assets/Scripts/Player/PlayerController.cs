@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private float _bubbleKeyPressStartTime;
     private bool _isBubbleKeyPressed;
 
-    private int _currentBubbleCount = 0;
+    public int _currentBubbleCount = 0;
     private GameObject _currentBubble;  // Track current bubble player is in
 
     private bool _isFacingRight = true;  // 新增朝向变量
