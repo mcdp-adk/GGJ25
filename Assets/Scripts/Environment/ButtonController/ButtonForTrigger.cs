@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ButtonForDoor : MonoBehaviour
 {
-    public GameObject targetObject; // ĞèÒª´¥·¢½Å±¾±ä»¯µÄÄ¿±êÎïÌå
-    private ButtonCallDoor targetScript; // Ä¿±êÎïÌåÉÏµÄ½Å±¾
-    public Sprite newSprite; // ĞèÒª±»Ìæ»»ÎªµÄÍ¼Æ¬
+    public GameObject targetObject; // éœ€è¦è§¦å‘è„šæœ¬å˜åŒ–çš„ç›®æ ‡ç‰©ä½“
+    private ButtonCallDoor targetScript; // ç›®æ ‡ç‰©ä½“ä¸Šçš„è„šæœ¬
+    public Sprite newSprite; // éœ€è¦è¢«æ›¿æ¢ä¸ºçš„å›¾ç‰‡
 
     void Start()
     {
@@ -26,16 +26,16 @@ public class ButtonForDoor : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("OnTriggerEnter2D called with: " + other.name); // Ìí¼Óµ÷ÊÔĞÅÏ¢
+        Debug.Log("OnTriggerEnter2D called with: " + other.name); // æ·»åŠ è°ƒè¯•ä¿¡æ¯
 
-        if (other.CompareTag("Player")) // È·ÈÏÅö×²µÄÎïÌå±êÇ©
+        if (other.CompareTag("Player")) // ç¡®è®¤ç¢°æ’çš„ç‰©ä½“æ ‡ç­¾
         {
             if (targetScript != null)
             {
-                targetScript.ButtonActivate(); // µ÷ÓÃButtonActivateº¯Êı
-                Debug.Log("ButtonActivate called on targetScript."); // Ìí¼Óµ÷ÊÔĞÅÏ¢
+                targetScript.ButtonActivate(); // è°ƒç”¨ButtonActivateå‡½æ•°
+                Debug.Log("ButtonActivate called on targetScript."); // æ·»åŠ è°ƒè¯•ä¿¡æ¯
 
-                // ¸ü¸ÄSpriteRendererÖĞµÄspriteÎªBUTTON_0
+                // æ›´æ”¹SpriteRendererä¸­çš„spriteä¸ºBUTTON_0
                 SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
                 if (spriteRenderer != null)
                 {
@@ -43,7 +43,7 @@ public class ButtonForDoor : MonoBehaviour
                     if (newSprite != null)
                     {
                         spriteRenderer.sprite = newSprite;
-                        Debug.Log("Sprite changed to BUTTON_0."); // Ìí¼Óµ÷ÊÔĞÅÏ¢
+                        Debug.Log("Sprite changed to BUTTON_0."); // æ·»åŠ è°ƒè¯•ä¿¡æ¯
                     }
                     else
                     {
