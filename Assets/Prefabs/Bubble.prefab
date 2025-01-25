@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ce1b2dd5fb7944b99316969f644088, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchForce: 10
+  launchForce: 40
   airResistance: 0
 --- !u!50 &511068735797582735
 Rigidbody2D:
@@ -382,3 +382,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a5c655cd4cd4f4ea30c9bc83bf0a21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeathLayer:
+    serializedVersion: 2
+    m_Bits: 256

@@ -15,32 +15,32 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
-  MaxSpeed: 14
-  Acceleration: 120
+  MaxSpeed: 10
+  Acceleration: 30
   GroundDeceleration: 60
-  AirDeceleration: 30
+  AirDeceleration: 15
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  JumpPower: 20
-  MaxFallSpeed: 40
-  FallAcceleration: 110
+  JumpPower: 10
+  MaxFallSpeed: 20
+  FallAcceleration: 30
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.1
   WallerDistance: 0.05
-  WallSlideSpeed: 5
-  WallJumpPowerX: 15
-  WallJumpPowerY: 20
+  WallSlideSpeed: 3
+  WallJumpPowerX: 10
+  WallJumpPowerY: 8
   WallCoyoteTime: 0.15
   WallJumpBuffer: 0.1
   WallJumpControlDisableTime: 0.2
   DashSpeed: 20
   DashDeceleration: 20
-  DashDuration: 0.2
+  DashDuration: 0.1
   BubbleGenerateDistanceX: 1.5
   BubbleGenerateDistanceY: 0.5
   BubbleGenerateVelosityX: 2
   BubbleGenerateVelosityY: 2
-  LongPressThreshold: 0.5
+  LongPressThreshold: 0.2
   MaxBubbleCount: 1
-  BubbleLifetime: 3
+  BubbleLifetime: 5

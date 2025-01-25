@@ -12,9 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f06f61af3376ee14892799a8f24c7cd2, type: 3}
   m_Name: InsideBubble
   m_EditorClassIdentifier: 
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 8
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
@@ -24,9 +21,26 @@ MonoBehaviour:
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  JumpPower: 36
-  MaxFallSpeed: 2
-  FallAcceleration: 200
+  JumpPower: 0
+  MaxFallSpeed: 1
+  FallAcceleration: 10
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2
+  WallerDistance: 0.05
+  WallSlideSpeed: 5
+  WallJumpPowerX: 0
+  WallJumpPowerY: 0
+  WallCoyoteTime: 0.15
+  WallJumpBuffer: 0.2
+  WallJumpControlDisableTime: 0.2
+  DashSpeed: 40
+  DashDeceleration: 60
+  DashDuration: 0.2
+  BubbleGenerateDistanceX: 2
+  BubbleGenerateDistanceY: 1
+  BubbleGenerateVelosityX: 5
+  BubbleGenerateVelosityY: 3
+  LongPressThreshold: 0.5
+  MaxBubbleCount: 1
+  BubbleLifetime: 3
