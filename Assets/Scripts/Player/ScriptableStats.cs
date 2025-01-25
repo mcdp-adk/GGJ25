@@ -93,5 +93,20 @@ namespace TarodevController
         public float WallJumpControlDisableTime = 0.2f;
 
         #endregion
+
+
+        #region Dash
+
+        [Header("DASH")]
+        [Tooltip("冲刺初速度")]
+        public float DashSpeed = 30f;
+
+        [Tooltip("冲刺减速度")]
+        public float DashDeceleration = 60f;
+
+        [Tooltip("冲刺持续时间")]
+        public float DashDuration = 0.2f;
+
+        #endregion
     }
 }

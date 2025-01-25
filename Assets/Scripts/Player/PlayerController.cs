@@ -27,6 +27,10 @@ namespace TarodevController
         private bool _wallJumpToConsume;
         private bool _wallCoyoteUsable;
 
+        private bool _isDashing;
+        private float _dashStartTime;
+        private Vector2 _dashDirection;
+
         #region Interface
 
         public Vector2 FrameInput => _frameInput.Move;
@@ -58,8 +62,10 @@ namespace TarodevController
 
         private void GatherInput()
         {
-            // 墙跳后的输入控制
-            bool inputEnabled = _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
+            bool dashPressed = Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.X);
+            
+            // Only gather normal input if not dashing
+            bool inputEnabled = !_isDashing && _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
 
             _frameInput = new FrameInput
             {
@@ -67,6 +73,12 @@ namespace TarodevController
                 JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.J),
                 Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero
             };
+
+            // Handle dash input
+            if (dashPressed && playerState == PlayerState.InsideBubble && !_isDashing)
+            {
+                StartDash();
+            }
 
             if (_stats.SnapInput)
             {
@@ -82,13 +94,53 @@ namespace TarodevController
             }
         }
 
+        private void StartDash()
+        {
+            _isDashing = true;
+            _dashStartTime = _time;
+            
+            // Normalize input direction for diagonal dash
+            _dashDirection = _frameInput.Move.normalized;
+            
+            // If no direction is pressed, dash in facing direction
+            if (_dashDirection == Vector2.zero)
+            {
+                _dashDirection = Vector2.right * Mathf.Sign(transform.localScale.x);
+            }
+            
+            // Set initial dash velocity
+            _frameVelocity = _dashDirection * _stats.DashSpeed;
+        }
+
+        private void HandleDash()
+        {
+            if (!_isDashing) return;
+
+            if (_time > _dashStartTime + _stats.DashDuration)
+            {
+                _isDashing = false;
+                return;
+            }
+
+            // Apply deceleration during dash
+            float dashSpeedMultiplier = 1 - ((_time - _dashStartTime) / _stats.DashDuration);
+            _frameVelocity = _dashDirection * (_stats.DashSpeed * dashSpeedMultiplier);
+        }
+
         private void FixedUpdate()
         {
             CheckCollisions();
 
-            HandleJump();
-            HandleDirection();
-            HandleGravity();
+            if (_isDashing)
+            {
+                HandleDash();
+            }
+            else
+            {
+                HandleJump();
+                HandleDirection();
+                HandleGravity();
+            }
 
             ApplyMovement();
         }
