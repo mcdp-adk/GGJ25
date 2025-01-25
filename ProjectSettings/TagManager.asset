@@ -48,3 +48,6 @@ TagManager:
   - name: Player
     uniqueID: 3467041883
     locked: 0
+  - name: bubble
+    uniqueID: 3824963659
+    locked: 0
