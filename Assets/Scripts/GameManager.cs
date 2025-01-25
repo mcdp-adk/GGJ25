@@ -27,6 +27,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 重生玩家
+    public void RespawnPlayer()
+    {
+        if (player != null)
+        {
+            DestroyGameObject(player);
+        }
+        SpawnAtPoint();
+    }
+
     #endregion
 
     #region Unity Callbacks

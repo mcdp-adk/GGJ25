@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     [SerializeField] private ScriptableStats insideBubbleStats; // 在 Bubble 中的配置
 
     [Header("Layer")]
-    public LayerMask EntityLayer;   // 玩家可以交互的图层
-    public LayerMask TriggerLayer;  // 用于触发的图层
+    [SerializeField] private LayerMask EntityLayer;   // 玩家可以交互的图层
+    [SerializeField] private LayerMask TriggerLayer;  // 用于触发的图层
+    [SerializeField] private LayerMask DeathLayer;    // 碰撞后 Player 死亡的图层
 
     [Header("Bubble")]
     [SerializeField] private GameObject bubblePrefab;
@@ -211,9 +212,16 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     #region Trigger
 
-    // 进入 Trigger Layer 后，切换配置
+    // 进入 Trigger 的逻辑，根据 Layer 检测
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check for death layer collision
+        if ((DeathLayer.value & (1 << other.gameObject.layer)) != 0)
+        {
+            GameManager.Instance.RespawnPlayer();
+            return;
+        }
+
         if ((TriggerLayer.value & (1 << other.gameObject.layer)) != 0)
         {
             playerState = PlayerState.InsideBubble;
@@ -222,7 +230,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
-    // 离开 Trigger Layer 后，切换配置
+    // 离开 Trigger 时的逻辑
     private void OnTriggerExit2D(Collider2D other)
     {
         if ((TriggerLayer.value & (1 << other.gameObject.layer)) != 0)
