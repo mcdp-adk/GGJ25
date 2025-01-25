@@ -39,7 +39,7 @@ public class BouncingBubble : MonoBehaviour
         {
             // 应用风阻
             Vector2 velocity = rb.velocity;
-            Vector2 airResistanceForce = new Vector2(-velocity.x, 0).normalized * airResistance * velocity.sqrMagnitude;
+            Vector2 airResistanceForce = -velocity.normalized * airResistance * velocity.sqrMagnitude;
             rb.AddForce(airResistanceForce);
         }
     }
