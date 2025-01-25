@@ -27,7 +27,7 @@ public class BouncingBubble : MonoBehaviour
     {
         // Ó¦ÓÃ·ç×è
         Vector2 velocity = rb.velocity;
-        Vector2 airResistanceForce = -velocity.normalized * airResistance * velocity.sqrMagnitude;
+        Vector2 airResistanceForce = new Vector2(-velocity.x, 0).normalized * airResistance * velocity.sqrMagnitude;
         rb.AddForce(airResistanceForce);
     }
 
