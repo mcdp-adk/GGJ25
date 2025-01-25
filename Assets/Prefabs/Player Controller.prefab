@@ -28,11 +28,12 @@ Transform:
   m_GameObject: {fileID: 1544650614272011804}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.143, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2969068311962969430}
+  - {fileID: 2969068313154050965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1544650614272011792
@@ -118,8 +119,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.7}
-  m_Size: {x: 0.9, y: 1.4}
+  m_Offset: {x: 0, y: 0.1}
+  m_Size: {x: 0.7, y: 0.8}
   m_Direction: 0
 --- !u!1 &2969068311587289281
 GameObject:
@@ -9887,6 +9888,7 @@ GameObject:
   - component: {fileID: 2969068311962969430}
   - component: {fileID: 2969068311962969768}
   - component: {fileID: 2969068311962969431}
+  - component: {fileID: 2941742659631262452}
   m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
@@ -9909,7 +9911,6 @@ Transform:
   m_Children:
   - {fileID: 2969068313184073012}
   - {fileID: 2969068311871471201}
-  - {fileID: 2969068313154050965}
   m_Father: {fileID: 1544650614272011795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &2969068311962969768
@@ -10033,6 +10034,26 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5d94063f45167b04ab62585e436da58c, type: 3}
   - {fileID: 8300000, guid: b5803c17557c59c40bf3a6d69cb46cb3, type: 3}
   - {fileID: 8300000, guid: 1876767bf7cbf284394dc3817af9593c, type: 3}
+--- !u!114 &2941742659631262452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2969068311962969429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0022304c0bdf87541b0f3140e762cd2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _anim: {fileID: 2969068313154050966}
+  _sprite: {fileID: 2969068313154050967}
+  _maxIdleSpeed: 2
+  _maxTilt: 5
+  _tiltSpeed: 20
+  _footsteps: []
+  frameVelocity: {x: 0, y: 0}
+  inputVelocity: {x: 0, y: 0}
 --- !u!1 &2969068312368229159
 GameObject:
   m_ObjectHideFlags: 0
@@ -14948,7 +14969,7 @@ Transform:
   m_GameObject: {fileID: 2969068312440364619}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.69, z: 0}
+  m_LocalPosition: {x: 0, y: 0.172, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -29587,11 +29608,11 @@ Transform:
   m_GameObject: {fileID: 2969068313154050964}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
+  m_LocalScale: {x: 0.3809524, y: 0.4148148, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2969068311962969430}
+  m_Father: {fileID: 1544650614272011795}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2969068313154050967
 SpriteRenderer:
@@ -29634,17 +29655,17 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9ec0ca269ec0b4f4fa12877c83d9dd88, type: 3}
+  m_Sprite: {fileID: 2139842119, guid: 30abd9c76fe2c4c46b8dfa1181e09b6e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 1
+  m_DrawMode: 0
   m_Size: {x: 1, y: 1.4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &2969068313154050966
 Animator:
   serializedVersion: 5
@@ -29655,7 +29676,7 @@ Animator:
   m_GameObject: {fileID: 2969068313154050964}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6e5b5f4662f713845b0c28185c4ea62c, type: 2}
+  m_Controller: {fileID: 9100000, guid: 43f2cec51a6a2af4d9933a32c5d40242, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

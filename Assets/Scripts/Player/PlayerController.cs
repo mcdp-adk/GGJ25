@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -458,6 +459,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
         return playerState;
     }
 
+    public bool GetIsInBubble()
+    {
+        return playerState == PlayerState.InsideBubble;
+    }
+
     public bool GetIsGrounded()
     {
         return _grounded;
@@ -471,6 +477,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public bool GetIsTouchingRightWall()
     {
         return _isTouchingRightWall;
+    }
+
+    public bool GetIsDashing()
+    {
+        return _isDashing;
     }
 
     public Vector2 GetFrameInput()

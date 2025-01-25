@@ -68,7 +68,13 @@ public class PlayerAnimator : MonoBehaviour
 
     private void HandleSpriteFlip()
     {
-        if (_player.FrameInput.x != 0) _sprite.flipX = _player.FrameInput.x < 0;
+        //if (_player.FrameInput.x != 0)
+        //{
+        //    GameManager.Instance.GetPlayer().GetComponent<PlayerController>().transform.Find("Visual").Find("Sprite").GetComponent<SpriteRenderer>().flipX = x_Input < 0;
+
+        //    Debug.Log("test2:" + _sprite.flipX);
+        //}
+
     }
 
     private void HandleIdleSpeed()
