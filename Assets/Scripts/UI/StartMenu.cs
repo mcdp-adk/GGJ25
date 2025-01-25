@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
 
     void StartGame()
     {
-        SceneManager.LoadScene("TarodevTest"); // 替换为您的游戏场景名称
+        SceneManager.LoadScene("MainGame"); // 替换为您的游戏场景名称
     }
 
     void ShowCredits()
