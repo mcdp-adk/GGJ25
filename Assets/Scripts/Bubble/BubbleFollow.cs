@@ -55,7 +55,7 @@ public class BubbleFollow : MonoBehaviour
         }
 
         // 检测K键和方向键的输入
-        if (isFollowing && Input.GetKeyDown(KeyCode.K))
+        if (isFollowing && (Input.GetKeyDown(KeyCode.K)|| Input.GetKeyDown(KeyCode.X)))
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
