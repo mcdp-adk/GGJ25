@@ -18,6 +18,15 @@ public class GameManager : MonoBehaviour
         return player;
     }
 
+    // 销毁传入的 GameObject 对象
+    public void DestroyGameObject(GameObject obj)
+    {
+        if (obj != null)
+        {
+            Destroy(obj);
+        }
+    }
+
     #endregion
 
     #region Unity Callbacks
