@@ -7,7 +7,7 @@ public class BubbleFollow : MonoBehaviour
     private bool isFollowing = false; // 标记圆圈是否在跟随玩家
     public float launchForce = 10f; // 发射力
     private Rigidbody2D rb;
-    public Vector2 initialVelocity;
+    //public Vector2 initialVelocity;
     public float airResistance; // 风阻
     private bool canCollide = true; // 标记是否可以碰撞
 
@@ -16,7 +16,7 @@ public class BubbleFollow : MonoBehaviour
         // 查找带有“Player”标签的对象
         player = GameObject.FindWithTag("Player");
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = initialVelocity;
+        //rb.velocity = initialVelocity;
 
         // 确保玩家和圆圈在同一个Layer或Layer之间的碰撞检测是启用的
         if (player != null)
