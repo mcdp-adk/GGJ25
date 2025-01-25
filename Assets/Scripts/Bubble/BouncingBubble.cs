@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BouncingBubble : MonoBehaviour
 {
     public Vector2 initialVelocity;
-    public float airResistance; // ·ç×è
-    public GameObject player; // Íæ¼Ò¶ÔÏó
-    public float moveDuration = 2f; // ÒÆ¶¯³ÖĞøÊ±¼ä
+    public float airResistance; // é£é˜»
+    public GameObject player; // ç©å®¶å¯¹è±¡
+    public float moveDuration = 2f; // ç§»åŠ¨æŒç»­æ—¶é—´
 
     private Rigidbody2D rb;
 
@@ -16,7 +14,7 @@ public class BouncingBubble : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = initialVelocity;
 
-        // ¸ù¾İÍæ¼Ò¶ÔÏóµÄÎ»ÖÃÉú³ÉÆøÅİ
+        // æ ¹æ®ç©å®¶å¯¹è±¡çš„ä½ç½®ç”Ÿæˆæ°”æ³¡
         if (player != null)
         {
             Vector2 playerPosition = player.transform.position;
@@ -26,20 +24,20 @@ public class BouncingBubble : MonoBehaviour
 
     void FixedUpdate()
     {
-        // ¸ù¾İÍæ¼Ò¶ÔÏóµÄÎ»ÖÃÉú³ÉÆøÅİ
+        // æ ¹æ®ç©å®¶å¯¹è±¡çš„ä½ç½®ç”Ÿæˆæ°”æ³¡
         if (player != null)
         {
             Vector2 playerPosition = player.transform.position;
             float distance = Vector2.Distance(transform.position, playerPosition);
 
-            // Ê¹ÓÃSmoothStepº¯Êı¶¯Ì¬µ÷ÕûËÙ¶È
+            // ä½¿ç”¨SmoothStepå‡½æ•°åŠ¨æ€è°ƒæ•´é€Ÿåº¦
             float speed = Mathf.SmoothStep(0, distance, Time.deltaTime / moveDuration);
 
             transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * Time.deltaTime);
         }
         else
         {
-            // Ó¦ÓÃ·ç×è
+            // åº”ç”¨é£é˜»
             Vector2 velocity = rb.velocity;
             Vector2 airResistanceForce = new Vector2(-velocity.x, 0).normalized * airResistance * velocity.sqrMagnitude;
             rb.AddForce(airResistanceForce);
@@ -48,7 +46,7 @@ public class BouncingBubble : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // ·´µ¯Âß¼­
+        // åå¼¹é€»è¾‘
         Vector2 normal = collision.contacts[0].normal;
         Vector2 newVelocity = Vector2.Reflect(rb.velocity, normal);
         rb.velocity = newVelocity;

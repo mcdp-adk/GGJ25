@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class ButtonCallDoor : MonoBehaviour
 {
-    public bool button_activate = true;  // ÊÇ·ñ´¦ÓÚ¼¤»î×´Ì¬
-    public float shrinkDuration = 1.0f;  // ËõĞ¡³ÖĞøÊ±¼ä
+    public bool button_activate = true;  // æ˜¯å¦å¤„äºæ¿€æ´»çŠ¶æ€
+    public float shrinkDuration = 1.0f;  // ç¼©å°æŒç»­æ—¶é—´
 
     public void ButtonActivate()
     {
-        // ÔÚÕâÀïÊµÏÖº¯ÊıµÄÂß¼­
+        // åœ¨è¿™é‡Œå®ç°å‡½æ•°çš„é€»è¾‘
         Debug.Log("Button activated!");
 
-        // ¿ªÊ¼Öğ½¥Ïû³ıµÄĞ­³Ì
+        // å¼€å§‹é€æ¸æ¶ˆé™¤çš„åç¨‹
         StartCoroutine(ShrinkAndDestroy());
     }
 
@@ -28,10 +28,10 @@ public class ButtonCallDoor : MonoBehaviour
             yield return null;
         }
 
-        // È·±£×îÖÕËõĞ¡µ½0
+        // ç¡®ä¿æœ€ç»ˆç¼©å°åˆ°0
         transform.localScale = new Vector3(originalScale.x, 0, originalScale.z);
 
-        // É¾³ı×ÔÉí
+        // åˆ é™¤è‡ªèº«
         Destroy(gameObject);
     }
 }
