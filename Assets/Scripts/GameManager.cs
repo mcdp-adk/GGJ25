@@ -1,9 +1,11 @@
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private GameObject spawnPlayer;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
     public static GameManager Instance { get; private set; }
     private GameObject player;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
         if (spawnPoint != null && spawnPlayer != null)
         {
             player = Instantiate(spawnPlayer, spawnPoint.position, spawnPoint.rotation);
+            virtualCamera.Follow = player.transform; // 设置虚拟相机追踪角色
         }
     }
 
