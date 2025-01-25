@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
 
-    [SerializeField] private GameObject pauseMenuUI; // ÍÏÈëÔİÍ£²Ëµ¥Panel
+    [SerializeField] private GameObject pauseMenuUI; // æ‹–å…¥æš‚åœèœå•Panel
     [SerializeField] private Button resumeButton;
     [SerializeField] private Button exitButton;
 
@@ -15,7 +15,7 @@ public class PauseMenu : MonoBehaviour
     {
         resumeButton.onClick.AddListener(Resume);
         exitButton.onClick.AddListener(ExitGame);
-        pauseMenuUI.SetActive(false); // ³õÊ¼Òş²ØÔİÍ£²Ëµ¥
+        pauseMenuUI.SetActive(false); // åˆå§‹éšè—æš‚åœèœå•
     }
 
     void Update()
@@ -31,15 +31,15 @@ public class PauseMenu : MonoBehaviour
 
     void Pause()
     {
-        pauseMenuUI.SetActive(true); // ÏÔÊ¾ÔİÍ£²Ëµ¥
-        Time.timeScale = 0f; // ÔİÍ£ÓÎÏ·
+        pauseMenuUI.SetActive(true); // æ˜¾ç¤ºæš‚åœèœå•
+        Time.timeScale = 0f; // æš‚åœæ¸¸æˆ
         isPaused = true;
     }
 
     void Resume()
     {
-        pauseMenuUI.SetActive(false); // Òş²ØÔİÍ£²Ëµ¥
-        Time.timeScale = 1f; // »Ö¸´ÓÎÏ·
+        pauseMenuUI.SetActive(false); // éšè—æš‚åœèœå•
+        Time.timeScale = 1f; // æ¢å¤æ¸¸æˆ
         isPaused = false;
     }
 
@@ -47,7 +47,7 @@ public class PauseMenu : MonoBehaviour
     {
         Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // ±à¼­Æ÷ÖĞÍË³ö²¥·Å
+        UnityEditor.EditorApplication.isPlaying = false; // ç¼–è¾‘å™¨ä¸­é€€å‡ºæ’­æ”¾
 #endif
     }
 }

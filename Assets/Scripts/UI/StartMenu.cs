@@ -7,38 +7,38 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private Button creditsButton;
     [SerializeField] private Button exitButton;
-    [SerializeField] private GameObject creditsPanel; // ÒıÓÃÖÆ×÷×éÃûµ¥Ãæ°å
-    [SerializeField] private Button closeCreditsButton; // ÒıÓÃ¹Ø±Õ°´Å¥
+    [SerializeField] private GameObject creditsPanel; // å¼•ç”¨åˆ¶ä½œç»„åå•é¢æ¿
+    [SerializeField] private Button closeCreditsButton; // å¼•ç”¨å…³é—­æŒ‰é’®
 
     void Start()
     {
         startButton.onClick.AddListener(StartGame);
         creditsButton.onClick.AddListener(ShowCredits);
         exitButton.onClick.AddListener(ExitGame);
-        closeCreditsButton.onClick.AddListener(HideCredits); // ¹Ø±Õ°´Å¥µÄ¼àÌıÊÂ¼ş
-        creditsPanel.SetActive(false); // ³õÊ¼×´Ì¬Òş²ØÖÆ×÷×éÃûµ¥Ãæ°å
+        closeCreditsButton.onClick.AddListener(HideCredits); // å…³é—­æŒ‰é’®çš„ç›‘å¬äº‹ä»¶
+        creditsPanel.SetActive(false); // åˆå§‹çŠ¶æ€éšè—åˆ¶ä½œç»„åå•é¢æ¿
     }
 
     void StartGame()
     {
-        SceneManager.LoadScene("TarodevTest"); // Ìæ»»ÎªÄúµÄÓÎÏ·³¡¾°Ãû³Æ
+        SceneManager.LoadScene("TarodevTest"); // æ›¿æ¢ä¸ºæ‚¨çš„æ¸¸æˆåœºæ™¯åç§°
     }
 
     void ShowCredits()
     {
-        creditsPanel.SetActive(true); // ÏÔÊ¾ÖÆ×÷×éÃûµ¥Ãæ°å
+        creditsPanel.SetActive(true); // æ˜¾ç¤ºåˆ¶ä½œç»„åå•é¢æ¿
     }
 
     void HideCredits()
     {
-        creditsPanel.SetActive(false); // Òş²ØÖÆ×÷×éÃûµ¥Ãæ°å
+        creditsPanel.SetActive(false); // éšè—åˆ¶ä½œç»„åå•é¢æ¿
     }
 
     void ExitGame()
     {
         Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // ±à¼­Æ÷ÖĞÍË³ö²¥·Å
+        UnityEditor.EditorApplication.isPlaying = false; // ç¼–è¾‘å™¨ä¸­é€€å‡ºæ’­æ”¾
 #endif
     }
 }
