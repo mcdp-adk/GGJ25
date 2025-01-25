@@ -40,7 +40,7 @@ MonoBehaviour:
   BubbleGenerateDistanceX: 2
   BubbleGenerateDistanceY: 1
   BubbleGenerateVelosityX: 5
-  BubbleGenerateVelosityY: 3
+  BubbleGenerateVelosityY: 5
   LongPressThreshold: 0.5
   MaxBubbleCount: 1
   BubbleLifetime: 3

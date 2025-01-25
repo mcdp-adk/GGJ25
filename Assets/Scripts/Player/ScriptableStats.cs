@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu]
+[CreateAssetMenu(fileName = "OutsideBubble", menuName = "Game/OutsideBubbleStats")]
 public class ScriptableStats : ScriptableObject
 {
     #region Input
