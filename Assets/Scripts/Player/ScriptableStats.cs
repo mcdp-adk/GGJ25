@@ -127,5 +127,11 @@ public class ScriptableStats : ScriptableObject
     [Tooltip("长按生成泡泡所需时间")]
     public float LongPressThreshold = 0.5f;
 
+    [Tooltip("最大泡泡生成数量")]
+    public int MaxBubbleCount = 1;
+
+    [Tooltip("泡泡生存时间（秒）")]
+    public float BubbleLifetime = 3f;
+
     #endregion
 }
