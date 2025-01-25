@@ -104,8 +104,8 @@ public class PlayerAnimator : MonoBehaviour
         if (controller != null)
         {
             var isWallSliding = !_grounded && (
-                controller.IsTouchingLeftWall && _player.FrameInput.x < 0 ||
-                controller.IsTouchingRightWall && _player.FrameInput.x > 0
+                controller.GetIsTouchingLeftWall() && _player.FrameInput.x < 0 ||
+                controller.GetIsTouchingRightWall() && _player.FrameInput.x > 0
             );
             _anim.SetBool(WallSlidingKey, isWallSliding);
         }

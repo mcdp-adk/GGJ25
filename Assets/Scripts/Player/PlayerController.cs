@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public LayerMask EntityLayer;   // 玩家可以交互的图层
     public LayerMask TriggerLayer;  // 用于触发的图层
 
+    [Header("Bubble")]
+    [SerializeField] private GameObject bubblePrefab;
+
     private ScriptableStats _stats;
     private Rigidbody2D _rb;
     private CapsuleCollider2D _col;
@@ -29,6 +32,14 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool _isDashing;
     private float _dashStartTime;
     private Vector2 _dashDirection;
+
+    private float _bubbleKeyPressStartTime;
+    private bool _isBubbleKeyPressed;
+
+    private int _currentBubbleCount = 0;
+    private GameObject _currentBubble;  // Track current bubble player is in
+
+    private bool _isFacingRight = true;  // 新增朝向变量
 
     #region Interface
 
@@ -59,9 +70,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
         GatherInput();
     }
 
+    #region Input
+
     private void GatherInput()
     {
-        bool dashPressed = Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.X);
+        bool dashPressed = Input.GetKeyDown(KeyCode.X) || Input.GetKeyDown(KeyCode.K);
 
         // Only gather normal input if not dashing
         bool inputEnabled = !_isDashing && _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
@@ -91,7 +104,54 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _wallJumpToConsume = true;
             _timeJumpWasPressed = _time;
         }
+
+        // Handle bubble destruction input when inside bubble
+        bool bubbleKeyDown = Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.L);
+        if (bubbleKeyDown && playerState == PlayerState.InsideBubble && _currentBubble != null)
+        {
+            GameManager.Instance.DestroyGameObject(_currentBubble);
+            _currentBubbleCount = Mathf.Max(0, _currentBubbleCount - 1);
+            _currentBubble = null;
+            return;
+        }
+
+        // Only handle bubble generation when outside bubble
+        if (playerState != PlayerState.OutsideBubble) return;
+
+        bool bubbleKeyUp = Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.L);
+        bool bubbleKeyHeld = Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.L);
+
+        if (bubbleKeyDown)
+        {
+            _bubbleKeyPressStartTime = _time;
+            _isBubbleKeyPressed = true;
+        }
+        else if (bubbleKeyUp && _isBubbleKeyPressed)
+        {
+            float pressDuration = _time - _bubbleKeyPressStartTime;
+            if (pressDuration < _stats.LongPressThreshold)
+            {
+                GenerateShortPressBubble();
+            }
+            _isBubbleKeyPressed = false;
+        }
+
+        // Check for long press
+        if (_isBubbleKeyPressed && bubbleKeyHeld)
+        {
+            float pressDuration = _time - _bubbleKeyPressStartTime;
+            if (pressDuration >= _stats.LongPressThreshold)
+            {
+                GenerateLongPressBubble();
+                _isBubbleKeyPressed = false;
+            }
+        }
     }
+
+    #endregion
+
+
+    #region Dash
 
     private void StartDash()
     {
@@ -126,6 +186,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _frameVelocity = _dashDirection * (_stats.DashSpeed * dashSpeedMultiplier);
     }
 
+    #endregion
+
     private void FixedUpdate()
     {
         CheckCollisions();
@@ -156,6 +218,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             playerState = PlayerState.InsideBubble;
             _stats = insideBubbleStats;
+            _currentBubble = other.gameObject;  // Store reference to current bubble
         }
     }
 
@@ -166,6 +229,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         {
             playerState = PlayerState.OutsideBubble;
             _stats = outsideBubbleStats;
+            _currentBubble = null;  // Clear reference when exiting
         }
     }
 
@@ -324,7 +388,24 @@ public class PlayerController : MonoBehaviour, IPlayerController
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+            // 更新朝向
+            if (_frameInput.Move.x > 0 && !_isFacingRight)
+            {
+                Flip();
+            }
+            else if (_frameInput.Move.x < 0 && _isFacingRight)
+            {
+                Flip();
+            }
         }
+    }
+
+    private void Flip()
+    {
+        _isFacingRight = !_isFacingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     #endregion
@@ -362,13 +443,99 @@ public class PlayerController : MonoBehaviour, IPlayerController
     #endregion
 
 
+    #region Public Methods
+
+    public PlayerState GetPlayerState()
+    {
+        return playerState;
+    }
+
+    public bool GetIsGrounded()
+    {
+        return _grounded;
+    }
+
+    public bool GetIsTouchingLeftWall()
+    {
+        return _isTouchingLeftWall;
+    }
+
+    public bool GetIsTouchingRightWall()
+    {
+        return _isTouchingRightWall;
+    }
+
+    public Vector2 GetFrameInput()
+    {
+        return _frameInput.Move;
+    }
+
+    public Vector2 GetFrameVelocity()
+    {
+        return _frameVelocity;
+    }
+
+    #endregion
+
+
     #region Others
 
     private void ApplyMovement() => _rb.velocity = _frameVelocity;
 
-    // Add public properties to access wall contact state
-    public bool IsTouchingLeftWall => _isTouchingLeftWall;
-    public bool IsTouchingRightWall => _isTouchingRightWall;
+    private void GenerateShortPressBubble()
+    {
+        if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
+
+        float direction = _isFacingRight ? 1f : -1f;
+        Vector3 spawnPosition = transform.position + new Vector3(
+            direction * _stats.BubbleGenerateDistanceX,
+            _stats.BubbleGenerateDistanceY,
+            0
+        );
+
+        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        BubbleController controller = bubble.GetComponent<BubbleController>();
+        
+        if (controller != null)
+        {
+            controller.initialPlayerState(PlayerState.OutsideBubble);
+            
+            Vector2 bubbleVelocity = new Vector2(
+                direction * _stats.BubbleGenerateVelosityX + _frameVelocity.x * 0.5f,
+                _stats.BubbleGenerateVelosityY + _frameVelocity.y * 0.3f
+            );
+            controller.initialBubbleVelosity(bubbleVelocity);
+            
+            _currentBubbleCount++;
+            StartCoroutine(DestroyBubbleAfterDelay(bubble));
+        }
+    }
+
+    private void GenerateLongPressBubble()
+    {
+        if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
+
+        Vector3 spawnPosition = transform.position + new Vector3(0, _stats.BubbleGenerateDistanceY, 0);
+        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        
+        BubbleController controller = bubble.GetComponent<BubbleController>();
+        if (controller != null)
+        {
+            controller.initialPlayerState(PlayerState.InsideBubble);
+            _currentBubbleCount++;
+            StartCoroutine(DestroyBubbleAfterDelay(bubble));
+        }
+    }
+
+    private System.Collections.IEnumerator DestroyBubbleAfterDelay(GameObject bubble)
+    {
+        yield return new WaitForSeconds(_stats.BubbleLifetime);
+        if (bubble != null)
+        {
+            GameManager.Instance.DestroyGameObject(bubble);
+            _currentBubbleCount = Mathf.Max(0, _currentBubbleCount - 1);
+        }
+    }
 }
 
 #endregion
