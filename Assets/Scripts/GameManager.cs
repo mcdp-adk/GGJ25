@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
     public void RespawnPlayer()
     {
         ShakeCamera(10f, 0.1f);
+        // 销毁所有带有“GeneratedBubble”标签的物体
+        GameObject[] bubbles = GameObject.FindGameObjectsWithTag("GeneratedBubble");
+        foreach (GameObject bubble in bubbles)
+        {
+            DestroyGameObject(bubble);
+        }
         if (player != null)
         {
             DestroyGameObject(player);
