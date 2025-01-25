@@ -33,6 +33,14 @@ public class PlayerAnimator : MonoBehaviour
     private bool _grounded;
     private ParticleSystem.MinMaxGradient _currentGradient;
 
+    // Animation parameter hashes - update these to match your Animator Controller parameters
+    private readonly int _horizontalSpeedHash = Animator.StringToHash("HorizontalSpeed");
+    private readonly int _verticalSpeedHash = Animator.StringToHash("VerticalSpeed");
+    private readonly int _isGroundedHash = Animator.StringToHash("IsGrounded");
+    private readonly int _idleSpeedHash = Animator.StringToHash("IdleSpeed");
+    private readonly int _jumpHash = Animator.StringToHash("Jump");
+    private readonly int _wallSlidingHash = Animator.StringToHash("WallSliding");
+
     private void Awake()
     {
         _source = GetComponent<AudioSource>();
@@ -60,13 +68,13 @@ public class PlayerAnimator : MonoBehaviour
         if (_player == null) return;
 
         DetectGroundColor();
-        HandleSpriteFlip();
+        HandleSpriteFlipping();
         HandleAnimationState();
         HandleIdleSpeed();
         HandleCharacterTilt();
     }
 
-    private void HandleSpriteFlip()
+    private void HandleSpriteFlipping()
     {
         if (_player.FrameInput.x != 0) _sprite.flipX = _player.FrameInput.x < 0;
     }
@@ -74,7 +82,7 @@ public class PlayerAnimator : MonoBehaviour
     private void HandleIdleSpeed()
     {
         var inputStrength = Mathf.Abs(_player.FrameInput.x);
-        _anim.SetFloat(IdleSpeedKey, Mathf.Lerp(1, _maxIdleSpeed, inputStrength));
+        _anim.SetFloat(_idleSpeedHash, Mathf.Lerp(1, _maxIdleSpeed, inputStrength));
         _moveParticles.transform.localScale = Vector3.MoveTowards(_moveParticles.transform.localScale, Vector3.one * inputStrength, 2 * Time.deltaTime);
     }
 
@@ -86,18 +94,12 @@ public class PlayerAnimator : MonoBehaviour
 
     private void HandleAnimationState()
     {
-        // Get player velocity from rigidbody
-        var rb = transform.parent.GetComponent<Rigidbody2D>();
-        if (rb == null) return;
-
-        // Set vertical velocity parameter
-        _anim.SetFloat(VerticalVelocityKey, rb.velocity.y);
-
-        // Set horizontal movement parameter
-        _anim.SetFloat(SpeedKey, Mathf.Abs(rb.velocity.x));
-
+        // Set horizontal and vertical speed parameters
+        _anim.SetFloat(_horizontalSpeedHash, Mathf.Abs(_player.Velocity.x));
+        _anim.SetFloat(_verticalSpeedHash, _player.Velocity.y);
+        
         // Set grounded state
-        _anim.SetBool(GroundedKey, _grounded);
+        _anim.SetBool(_isGroundedHash, _grounded);
 
         // Check if wall sliding (requires accessing player controller component)
         var controller = transform.parent.GetComponent<PlayerController>();
@@ -107,15 +109,14 @@ public class PlayerAnimator : MonoBehaviour
                 controller.GetIsTouchingLeftWall() && _player.FrameInput.x < 0 ||
                 controller.GetIsTouchingRightWall() && _player.FrameInput.x > 0
             );
-            _anim.SetBool(WallSlidingKey, isWallSliding);
+            _anim.SetBool(_wallSlidingHash, isWallSliding);
         }
     }
 
     private void OnJumped()
     {
-        _anim.SetTrigger(JumpKey);
-        _anim.ResetTrigger(GroundedKey);
-
+        _anim.SetTrigger(_jumpHash);
+        _anim.ResetTrigger(_isGroundedHash);
 
         if (_grounded) // Avoid coyote
         {
@@ -134,7 +135,7 @@ public class PlayerAnimator : MonoBehaviour
             DetectGroundColor();
             SetColor(_landParticles);
 
-            _anim.SetTrigger(GroundedKey);
+            _anim.SetTrigger(_isGroundedHash);
             _source.PlayOneShot(_footsteps[Random.Range(0, _footsteps.Length)]);
             _moveParticles.Play();
 
@@ -162,11 +163,4 @@ public class PlayerAnimator : MonoBehaviour
         var main = ps.main;
         main.startColor = _currentGradient;
     }
-
-    private static readonly int GroundedKey = Animator.StringToHash("Grounded");
-    private static readonly int IdleSpeedKey = Animator.StringToHash("IdleSpeed");
-    private static readonly int JumpKey = Animator.StringToHash("Jump");
-    private static readonly int VerticalVelocityKey = Animator.StringToHash("VerticalVelocity");
-    private static readonly int SpeedKey = Animator.StringToHash("Speed");
-    private static readonly int WallSlidingKey = Animator.StringToHash("WallSliding");
 }
