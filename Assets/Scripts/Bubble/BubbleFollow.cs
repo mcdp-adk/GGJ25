@@ -38,6 +38,13 @@ public class BubbleFollow : MonoBehaviour
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject == player)
+        {
+            isFollowing = false; // 玩家离开时停止跟随
+        }
+    }
 
     void Update()
     {
@@ -48,7 +55,7 @@ public class BubbleFollow : MonoBehaviour
         }
 
         // 检测K键和方向键的输入
-        if (Input.GetKeyDown(KeyCode.K))
+        if (isFollowing && Input.GetKeyDown(KeyCode.K))
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
