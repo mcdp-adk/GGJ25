@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu]
-public class LightBubbleStats : TarodevController.ScriptableStats
+public class LightBubbleStats : ScriptableStats
 {
     
 }
