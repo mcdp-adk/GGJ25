@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
-    public GameObject pauseMenuUI; // Õœ»Î‘›Õ£≤Àµ•Panel
-    public Button resumeButton;
-    public Button exitButton;
+
+    [SerializeField] private GameObject pauseMenuUI; // Õœ»Î‘›Õ£≤Àµ•Panel
+    [SerializeField] private Button resumeButton;
+    [SerializeField] private Button exitButton;
 
     private bool isPaused = false;
 

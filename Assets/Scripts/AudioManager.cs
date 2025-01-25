@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public AudioSource backgroundMusic; // ÍÏÈë±³¾°ÒôÀÖµÄ AudioSource
+    [SerializeField] private AudioSource backgroundMusic; // ÍÏÈë±³¾°ÒôÀÖµÄ AudioSource
 
     void Start()
     {

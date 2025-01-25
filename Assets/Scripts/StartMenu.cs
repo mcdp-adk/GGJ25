@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
-    public Button startButton;
-    public Button creditsButton;
-    public Button exitButton;
-    public GameObject creditsPanel; // 引用制作组名单面板
-    public Button closeCreditsButton; // 引用关闭按钮
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button creditsButton;
+    [SerializeField] private Button exitButton;
+    [SerializeField] private GameObject creditsPanel; // 引用制作组名单面板
+    [SerializeField] private Button closeCreditsButton; // 引用关闭按钮
 
     void Start()
     {
