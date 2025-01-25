@@ -27,6 +27,10 @@ namespace TarodevController
         private bool _wallJumpToConsume;
         private bool _wallCoyoteUsable;
 
+        private bool _isDashing;
+        private float _dashStartTime;
+        private Vector2 _dashDirection;
+
         #region Interface
 
         public Vector2 FrameInput => _frameInput.Move;
@@ -58,16 +62,23 @@ namespace TarodevController
 
         private void GatherInput()
         {
-            // 墙跳后的输入控制
-            bool inputEnabled = _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
+            bool dashPressed = Input.GetKeyDown(KeyCode.K) || Input.GetKeyDown(KeyCode.X);
             
+            // Only gather normal input if not dashing
+            bool inputEnabled = !_isDashing && _time > _wallJumpStartTime + _stats.WallJumpControlDisableTime;
+
             _frameInput = new FrameInput
             {
-                JumpDown = Input.GetButtonDown("Jump"),
-                JumpHeld = Input.GetButton("Jump"),
-                Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) 
-                                  : Vector2.zero
+                JumpDown = Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.C) || Input.GetKeyDown(KeyCode.J),
+                JumpHeld = Input.GetButton("Jump") || Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.J),
+                Move = inputEnabled ? new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")) : Vector2.zero
             };
+
+            // Handle dash input
+            if (dashPressed && playerState == PlayerState.InsideBubble && !_isDashing)
+            {
+                StartDash();
+            }
 
             if (_stats.SnapInput)
             {
@@ -83,13 +94,53 @@ namespace TarodevController
             }
         }
 
+        private void StartDash()
+        {
+            _isDashing = true;
+            _dashStartTime = _time;
+            
+            // Normalize input direction for diagonal dash
+            _dashDirection = _frameInput.Move.normalized;
+            
+            // If no direction is pressed, dash in facing direction
+            if (_dashDirection == Vector2.zero)
+            {
+                _dashDirection = Vector2.right * Mathf.Sign(transform.localScale.x);
+            }
+            
+            // Set initial dash velocity
+            _frameVelocity = _dashDirection * _stats.DashSpeed;
+        }
+
+        private void HandleDash()
+        {
+            if (!_isDashing) return;
+
+            if (_time > _dashStartTime + _stats.DashDuration)
+            {
+                _isDashing = false;
+                return;
+            }
+
+            // Apply deceleration during dash
+            float dashSpeedMultiplier = 1 - ((_time - _dashStartTime) / _stats.DashDuration);
+            _frameVelocity = _dashDirection * (_stats.DashSpeed * dashSpeedMultiplier);
+        }
+
         private void FixedUpdate()
         {
             CheckCollisions();
 
-            HandleJump();
-            HandleDirection();
-            HandleGravity();
+            if (_isDashing)
+            {
+                HandleDash();
+            }
+            else
+            {
+                HandleJump();
+                HandleDirection();
+                HandleGravity();
+            }
 
             ApplyMovement();
         }
@@ -242,11 +293,11 @@ namespace TarodevController
             _wallJumpStartTime = _time;
             _endedJumpEarly = false;
             _wallCoyoteUsable = false;
-            
+
             float directionX = _isTouchingLeftWall ? 1 : -1;
             _frameVelocity.x = directionX * _stats.WallJumpPowerX;
             _frameVelocity.y = _stats.WallJumpPowerY;
-            
+
             Jumped?.Invoke();
         }
 
@@ -315,6 +366,10 @@ namespace TarodevController
         #region Others
 
         private void ApplyMovement() => _rb.velocity = _frameVelocity;
+
+        // Add public properties to access wall contact state
+        public bool IsTouchingLeftWall => _isTouchingLeftWall;
+        public bool IsTouchingRightWall => _isTouchingRightWall;
     }
 
     #endregion
