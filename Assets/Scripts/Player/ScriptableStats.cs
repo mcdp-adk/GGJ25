@@ -107,4 +107,25 @@ public class ScriptableStats : ScriptableObject
     public float DashDuration = 0.2f;
 
     #endregion
+
+
+    #region Bubble Generation
+
+    [Header("BUBBLE GENERATION")]
+    [Tooltip("生成泡泡的水平距离")]
+    public float BubbleGenerateDistanceX = 2f;
+
+    [Tooltip("生成泡泡的垂直距离")]
+    public float BubbleGenerateDistanceY = 1f;
+
+    [Tooltip("泡泡初始水平速度")]
+    public float BubbleGenerateVelosityX = 5f;
+
+    [Tooltip("泡泡初始垂直速度")]
+    public float BubbleGenerateVelosityY = 3f;
+
+    [Tooltip("长按生成泡泡所需时间")]
+    public float LongPressThreshold = 0.5f;
+
+    #endregion
 }

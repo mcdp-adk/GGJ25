@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public LayerMask EntityLayer;   // 玩家可以交互的图层
     public LayerMask TriggerLayer;  // 用于触发的图层
 
+    [Header("Bubble")]
+    [SerializeField] private GameObject bubblePrefab;
+
     private ScriptableStats _stats;
     private Rigidbody2D _rb;
     private CapsuleCollider2D _col;
@@ -29,6 +32,9 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool _isDashing;
     private float _dashStartTime;
     private Vector2 _dashDirection;
+
+    private float _bubbleKeyPressStartTime;
+    private bool _isBubbleKeyPressed;
 
     #region Interface
 
@@ -90,6 +96,37 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _jumpToConsume = true;
             _wallJumpToConsume = true;
             _timeJumpWasPressed = _time;
+        }
+
+        // Handle bubble generation input
+        bool bubbleKeyDown = Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.L);
+        bool bubbleKeyUp = Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.L);
+        bool bubbleKeyHeld = Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.L);
+
+        if (bubbleKeyDown)
+        {
+            _bubbleKeyPressStartTime = _time;
+            _isBubbleKeyPressed = true;
+        }
+        else if (bubbleKeyUp && _isBubbleKeyPressed)
+        {
+            float pressDuration = _time - _bubbleKeyPressStartTime;
+            if (pressDuration < _stats.LongPressThreshold)
+            {
+                GenerateShortPressBubble();
+            }
+            _isBubbleKeyPressed = false;
+        }
+
+        // Check for long press
+        if (_isBubbleKeyPressed && bubbleKeyHeld)
+        {
+            float pressDuration = _time - _bubbleKeyPressStartTime;
+            if (pressDuration >= _stats.LongPressThreshold)
+            {
+                GenerateLongPressBubble();
+                _isBubbleKeyPressed = false;
+            }
         }
     }
 
@@ -404,6 +441,46 @@ public class PlayerController : MonoBehaviour, IPlayerController
     // Add public properties to access wall contact state
     public bool IsTouchingLeftWall => _isTouchingLeftWall;
     public bool IsTouchingRightWall => _isTouchingRightWall;
+
+    private void GenerateShortPressBubble()
+    {
+        if (bubblePrefab == null) return;
+
+        float direction = Mathf.Sign(transform.localScale.x);
+        Vector3 spawnPosition = transform.position + new Vector3(
+            direction * _stats.BubbleGenerateDistanceX,
+            _stats.BubbleGenerateDistanceY,
+            0
+        );
+
+        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        BubbleController controller = bubble.GetComponent<BubbleController>();
+        
+        if (controller != null)
+        {
+            controller.initialPlayerState(PlayerState.OutsideBubble);
+            
+            Vector2 bubbleVelocity = new Vector2(
+                direction * _stats.BubbleGenerateVelosityX + _frameVelocity.x * 0.5f,
+                _stats.BubbleGenerateVelosityY + _frameVelocity.y * 0.3f
+            );
+            controller.initialBubbleVelosity(bubbleVelocity);
+        }
+    }
+
+    private void GenerateLongPressBubble()
+    {
+        if (bubblePrefab == null) return;
+
+        Vector3 spawnPosition = transform.position + new Vector3(0, _stats.BubbleGenerateDistanceY, 0);
+        GameObject bubble = Instantiate(bubblePrefab, spawnPosition, Quaternion.identity);
+        
+        BubbleController controller = bubble.GetComponent<BubbleController>();
+        if (controller != null)
+        {
+            controller.initialPlayerState(PlayerState.InsideBubble);
+        }
+    }
 }
 
 #endregion

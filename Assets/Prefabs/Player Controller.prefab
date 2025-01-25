@@ -55,6 +55,7 @@ MonoBehaviour:
   TriggerLayer:
     serializedVersion: 2
     m_Bits: 128
+  bubblePrefab: {fileID: 4966889438495469391, guid: 9bce835a494cae8498500e21f929d86a, type: 3}
 --- !u!50 &1544650614272011793
 Rigidbody2D:
   serializedVersion: 4
