@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private int _currentBubbleCount = 0;
     private GameObject _currentBubble;  // Track current bubble player is in
 
+    private bool _isFacingRight = true;  // 新增朝向变量
+
     #region Interface
 
     public Vector2 FrameInput => _frameInput.Move;
@@ -386,7 +388,24 @@ public class PlayerController : MonoBehaviour, IPlayerController
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+            // 更新朝向
+            if (_frameInput.Move.x > 0 && !_isFacingRight)
+            {
+                Flip();
+            }
+            else if (_frameInput.Move.x < 0 && _isFacingRight)
+            {
+                Flip();
+            }
         }
+    }
+
+    private void Flip()
+    {
+        _isFacingRight = !_isFacingRight;
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
     }
 
     #endregion
@@ -467,7 +486,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
 
-        float direction = Mathf.Sign(transform.localScale.x);
+        float direction = _isFacingRight ? 1f : -1f;
         Vector3 spawnPosition = transform.position + new Vector3(
             direction * _stats.BubbleGenerateDistanceX,
             _stats.BubbleGenerateDistanceY,

@@ -37,3 +37,10 @@ MonoBehaviour:
   DashSpeed: 10
   DashDeceleration: 20
   DashDuration: 0.2
+  BubbleGenerateDistanceX: 2
+  BubbleGenerateDistanceY: 1
+  BubbleGenerateVelosityX: 5
+  BubbleGenerateVelosityY: 3
+  LongPressThreshold: 0.5
+  MaxBubbleCount: 1
+  BubbleLifetime: 3
