@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -493,6 +494,23 @@ public class PlayerController : MonoBehaviour, IPlayerController
     public Vector2 GetFrameVelocity()
     {
         return _frameVelocity;
+    }
+
+    public Dictionary<string, object> GetPlayerStateDictionary()
+    {
+        Dictionary<string, object> playerStateDict = new Dictionary<string, object>
+        {
+            { "x_Speed", _frameVelocity.x },
+            { "y_Speed", _frameVelocity.y },
+            { "x_Input", _frameInput.Move.x },
+            { "y_Input", _frameInput.Move.y },
+            { "IsInBubble", (playerState == PlayerState.InsideBubble) },
+            { "IsGrounded", _grounded },
+            { "IsTouchingLeftWall", _isTouchingLeftWall },
+            { "IsTouchingRightWall", _isTouchingRightWall },
+            { "IsDashing", _isDashing },
+        };
+        return playerStateDict;
     }
 
     #endregion

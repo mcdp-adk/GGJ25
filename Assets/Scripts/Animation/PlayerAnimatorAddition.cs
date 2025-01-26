@@ -26,6 +26,7 @@ public class PlayerAnimatorAddition : MonoBehaviour
     private AudioClip[] _footsteps;
 
     [Header("Statue")]
+    Dictionary<string, object> playerStateDict;
     public Vector2 frameVelocity;
     public Vector2 inputVelocity;
     private float x_Speed = 0f;
@@ -64,22 +65,21 @@ public class PlayerAnimatorAddition : MonoBehaviour
 
     private void Update()
     {
-        if (_player == null) return;
+        //if (_player == null) return;
 
-        frameVelocity = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetFrameVelocity();
-        x_Speed = frameVelocity.x;
-        y_Speed = frameVelocity.y;
+        Dictionary<string, object> playerStateDict = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetPlayerStateDictionary();
 
-        inputVelocity = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetFrameInput();
-        x_Input = inputVelocity.x;
-        y_Input = inputVelocity.y;
+        x_Speed = (float)playerStateDict["x_Speed"];
+        y_Speed = (float)playerStateDict["y_Speed"];
+        x_Input = (float)playerStateDict["x_Input"];
+        y_Input = (float)playerStateDict["y_Input"];
+        isGrounded = (bool)playerStateDict["IsGrounded"];
+        isInBubble = (bool)playerStateDict["IsInBubble"];
+        isDashStateActive = (bool)playerStateDict["IsDashing"];
+        isLeftWallContactActive = (bool)playerStateDict["IsTouchingLeftWall"];
+        isRightWallContactActive = (bool)playerStateDict["IsTouchingRightWall"];
 
-        isGrounded = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetIsGrounded();
-        isInBubble = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetIsInBubble();
-        isDashStateActive = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetIsDashing();
-        isLeftWallContactActive = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetIsTouchingLeftWall();
-        isRightWallContactActive = GameManager.Instance.GetPlayer().GetComponent<PlayerController>().GetIsTouchingRightWall();
-
+        // 你可以在这里使用这些变量
         HandleSpriteFlip();
         UpdateAnimation();
     }
@@ -102,7 +102,7 @@ public class PlayerAnimatorAddition : MonoBehaviour
         if (x_Input != 0)
         {
             Debug.Log("test:" + _sprite.flipX);
-            GameManager.Instance.GetPlayer().GetComponent<PlayerController>().transform.Find("Visual").Find("Sprite").GetComponent<SpriteRenderer>().flipX = x_Input < 0;
+            //GameManager.Instance.GetPlayer().GetComponent<PlayerController>().transform.Find("Visual").Find("Sprite").GetComponent<SpriteRenderer>().flipX = x_Input < 0;
         }
     }
 
