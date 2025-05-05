@@ -651,7 +651,7 @@ Transform:
   m_GameObject: {fileID: 785289496}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 50, y: 17.83, z: -0.017640764}
+  m_LocalPosition: {x: 12.43, y: 14, z: -0.017640764}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2000,7 +2000,7 @@ GameObject:
   - component: {fileID: 930490253}
   - component: {fileID: 930490252}
   m_Layer: 0
-  m_Name: Bubble Manager
+  m_Name: RBubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198113,6 +198113,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613843546}
   m_CullTransparentMesh: 1
+--- !u!1 &1639463355
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1639463357}
+  - component: {fileID: 1639463356}
+  m_Layer: 0
+  m_Name: YBubble
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1639463356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639463355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3aea592aaa2c47c09a5a488dedb40be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yellowBubblePrefab: {fileID: 9097467484939283294, guid: 3863da880885644dab1c79e08c593d89, type: 3}
+  spawnPosition: {x: 45, y: 12, z: 0}
+  respawnInterval: 20
+--- !u!4 &1639463357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639463355}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.75, y: 24.34, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1689276775
 GameObject:
   m_ObjectHideFlags: 0
@@ -199759,3 +199806,4 @@ SceneRoots:
   - {fileID: 307472584}
   - {fileID: 964046173}
   - {fileID: 930490253}
+  - {fileID: 1639463357}

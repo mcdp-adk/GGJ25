@@ -35,7 +35,6 @@ public class BubbleFollow1 : MonoBehaviour
             isAttached = true;
             if (playerRb != null)
             {
-                // 禁用玩家的Rigidbody2D控制
                 playerRb.simulated = false;
             }
         }
@@ -45,14 +44,12 @@ public class BubbleFollow1 : MonoBehaviour
     {
         if (isAttached && player != null)
         {
-            // 让玩家跟随泡泡移动
             player.transform.position = transform.position;
         }
     }
 
     void FixedUpdate()
     {
-        // 应用风阻
         Vector2 velocity = rb.velocity;
         Vector2 airResistanceForce = new Vector2(-velocity.x, 0).normalized * airResistance * velocity.sqrMagnitude;
         rb.AddForce(airResistanceForce);
@@ -65,8 +62,6 @@ public class BubbleFollow1 : MonoBehaviour
             Vector2 normal = collision.contacts[0].normal;
             Vector2 currentVelocity = rb.velocity;
             float speed = currentVelocity.magnitude;
-
-            // 计算入射方向与法线的夹角
             float angle = Vector2.Angle(currentVelocity, -normal);
             
             Vector2 newVelocity;

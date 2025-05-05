@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private bool _cachedQueryStartInColliders;
 
     private PlayerState playerState = PlayerState.OutsideBubble;  // 角色状态
+    public bool IsImmuneToSpikes = false;
 
     private float _wallJumpStartTime;
     private bool _wallJumpToConsume;
@@ -376,7 +377,10 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _timeJumpWasPressed = 0;
         _bufferedJumpUsable = false;
         _coyoteUsable = false;
-        _frameVelocity.y = _stats.JumpPower;
+        _frameVelocity.y = JumpPowerNew; 
+        Debug.Log("JumpPower: " + _stats.JumpPower);
+        Debug.Log("jumpBuffMultiplier: " + jumpBuffMultiplier);
+        Debug.Log("JumpPowerNew: " + JumpPowerNew);
         Jumped?.Invoke();
     }
 
@@ -393,7 +397,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
         else
         {
-            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+            _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
             if (_frameInput.Move.x > 0 && !_isFacingRight)
             {
                 Flip();
@@ -449,6 +453,11 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
 
     #region Public Methods
+public float jumpBuffMultiplier = 1f;
+public float speedBuffMultiplier = 1f;
+
+public float JumpPowerNew => _stats.JumpPower * jumpBuffMultiplier;
+public float MaxSpeed => _stats.MaxSpeed * speedBuffMultiplier;
 
     public PlayerState GetPlayerState()
     {
