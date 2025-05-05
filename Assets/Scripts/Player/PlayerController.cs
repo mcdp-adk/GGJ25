@@ -351,15 +351,26 @@ public class PlayerController : MonoBehaviour, IPlayerController
         _wallJumpStartTime = _time;
         _endedJumpEarly = false;
         _wallCoyoteUsable = false;
-
         float directionX = _isTouchingLeftWall ? 1 : -1;
         _frameVelocity.x = directionX * _stats.WallJumpPowerX;
         _frameVelocity.y = _stats.WallJumpPowerY;
-
         Jumped?.Invoke();
     }
 
     private void ExecuteJump()
+    {
+        JustJumped = true; // 触发动画
+        StartCoroutine(ExecuteJump_Animation());
+    }
+
+    private IEnumerator<object> ExecuteJump_Animation()
+    {
+        yield return new WaitForSeconds(0.3f); // 等待动画时长
+        JustJumped = false; // 动画结束
+        ExecuteJump_Internal();
+    }
+
+    private void ExecuteJump_Internal()
     {
         _endedJumpEarly = false;
         _timeJumpWasPressed = 0;
@@ -383,7 +394,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
         else
         {
             _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
-            // 更新朝向
             if (_frameInput.Move.x > 0 && !_isFacingRight)
             {
                 Flip();
@@ -505,6 +515,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void ApplyMovement() => _rb.velocity = _frameVelocity;
 
     public bool BubbleJustCreated { get; set; }
+    public bool JustJumped { get; set; }
     private void GenerateShortPressBubble()
     {
         if (_currentBubbleCount >= _stats.MaxBubbleCount) return;
@@ -514,9 +525,23 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     private IEnumerator<WaitForSeconds> GenerateShortPressBubble_Amination()
     {
-        yield return new WaitForSeconds(1.5f); // 等待动画时长
+        yield return new WaitForSeconds(0.6f); // 等待动画时长
         BubbleJustCreated = false; // 动画结束
         GenerateShortPressBubble_Internal();
+    }
+
+    private void GenerateLongPressBubble()
+    {
+        if (_currentBubbleCount >= _stats.MaxBubbleCount) return;
+        BubbleJustCreated = true; // 触发动画
+        StartCoroutine(GenerateLongPressBubble_Amination());
+    }
+
+    private IEnumerator<object> GenerateLongPressBubble_Amination()
+    {
+        yield return new WaitForSeconds(0.6f); // 等待动画时长
+        BubbleJustCreated = false; // 动画结束
+        GenerateLongPressBubble_Internal();
     }
 
     private void GenerateShortPressBubble_Internal()
@@ -548,7 +573,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
     }
 
-    private void GenerateLongPressBubble()
+    private void GenerateLongPressBubble_Internal()
     {
         if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
 

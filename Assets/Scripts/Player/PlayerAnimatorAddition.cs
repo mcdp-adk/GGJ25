@@ -87,9 +87,13 @@ public class PlayerAnimatorAddition : MonoBehaviour
         var playerController = playerObj.GetComponent<PlayerController>();
         if (playerController != null && playerController.BubbleJustCreated)
         {
-            Debug.Log("Creating bubble amination");
             _anim.SetTrigger("BubbleCreate");
             playerController.BubbleJustCreated = false;
+        }
+        if (playerController != null && playerController.JustJumped)
+        {
+            _anim.SetTrigger("Jump");
+            playerController.JustJumped = false;
         }
         _anim.SetFloat(xSpeed, x_Speed);
         _anim.SetFloat(ySpeed, y_Speed);
