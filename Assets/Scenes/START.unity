@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 107070386}
   - component: {fileID: 107070388}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Logo Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1097,7 +1097,7 @@ GameObject:
   - component: {fileID: 968196875}
   - component: {fileID: 968196874}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Main Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1203,7 +1203,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -570.6342, y: -251.2494}
+  m_SizeDelta: {x: -400, y: -199.99997}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &979219114
 MonoBehaviour:
@@ -1218,7 +1218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1242,7 +1242,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979219112}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &986312996
 GameObject:
   m_ObjectHideFlags: 0
@@ -1814,7 +1814,7 @@ GameObject:
   - component: {fileID: 1599420638}
   - component: {fileID: 1599420637}
   m_Layer: 5
-  m_Name: PanelImage
+  m_Name: Panel Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
