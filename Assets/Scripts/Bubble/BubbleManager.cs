@@ -12,7 +12,6 @@ public class BubbleManager : MonoBehaviour
     
     [Header("生成位置")]
     public Vector3 spawnPosition;           // 生成位置
-    
     private float timer;                    // 计时器
     private bool canSpawn = true;          // 是否可以生成
 
@@ -28,7 +27,6 @@ public class BubbleManager : MonoBehaviour
     void Update()
     {
         if (!canSpawn || bubblePrefab == null) return;
-
         timer += Time.deltaTime;
         if (timer >= spawnInterval)
         {

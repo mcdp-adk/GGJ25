@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
         }
 
         // Handle bubble destruction input when inside bubble
-        bool bubbleKeyDown = Input.GetKeyDown(KeyCode.Z) || Input.GetKeyDown(KeyCode.L);
+        bool bubbleKeyDown = Input.GetKeyDown(KeyCode.Z);
         if (bubbleKeyDown && playerState == PlayerState.InsideBubble && _currentBubble != null)
         {
             GameManager.Instance.DestroyGameObject(_currentBubble);
@@ -122,8 +122,8 @@ public class PlayerController : MonoBehaviour, IPlayerController
         // Only handle bubble generation when outside bubble
         if (playerState != PlayerState.OutsideBubble) return;
 
-        bool bubbleKeyUp = Input.GetKeyUp(KeyCode.Z) || Input.GetKeyUp(KeyCode.L);
-        bool bubbleKeyHeld = Input.GetKey(KeyCode.Z) || Input.GetKey(KeyCode.L);
+        bool bubbleKeyUp = Input.GetKeyUp(KeyCode.Z);
+        bool bubbleKeyHeld = Input.GetKey(KeyCode.Z);
 
         if (bubbleKeyDown)
         {
@@ -161,31 +161,22 @@ public class PlayerController : MonoBehaviour, IPlayerController
     {
         _isDashing = true;
         _dashStartTime = _time;
-
-        // Normalize input direction for diagonal dash
-        _dashDirection = _frameInput.Move.normalized;
-
-        // If no direction is pressed, dash in facing direction
+        _dashDirection = _frameInput.Move.normalized; 
         if (_dashDirection == Vector2.zero)
         {
             _dashDirection = Vector2.right * Mathf.Sign(transform.localScale.x);
         }
-
-        // Set initial dash velocity
         _frameVelocity = _dashDirection * _stats.DashSpeed;
     }
 
     private void HandleDash()
     {
         if (!_isDashing) return;
-
         if (_time > _dashStartTime + _stats.DashDuration)
         {
             _isDashing = false;
             return;
         }
-
-        // Apply deceleration during dash
         float dashSpeedMultiplier = 1 - ((_time - _dashStartTime) / _stats.DashDuration);
         _frameVelocity = _dashDirection * (_stats.DashSpeed * dashSpeedMultiplier);
     }
@@ -195,7 +186,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void FixedUpdate()
     {
         CheckCollisions();
-
         if (_isDashing)
         {
             HandleDash();
@@ -206,7 +196,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             HandleDirection();
             HandleGravity();
         }
-
         ApplyMovement();
     }
 
@@ -330,8 +319,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
     private void HandleJump()
     {
         if (!_endedJumpEarly && !_grounded && !_frameInput.JumpHeld && _rb.velocity.y > 0) _endedJumpEarly = true;
-
-        // 先处理普通跳跃
         if (_jumpToConsume || HasBufferedJump)
         {
             if (_grounded || CanUseCoyote)
@@ -342,8 +329,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
                 return;
             }
         }
-
-        // 再处理墙跳
         if (_wallJumpToConsume && CanWallJump())
         {
             ExecuteWallJump();
@@ -351,7 +336,6 @@ public class PlayerController : MonoBehaviour, IPlayerController
             _jumpToConsume = false;
             return;
         }
-
         _jumpToConsume = false;
     }
 
@@ -520,7 +504,22 @@ public class PlayerController : MonoBehaviour, IPlayerController
 
     private void ApplyMovement() => _rb.velocity = _frameVelocity;
 
+    public bool BubbleJustCreated { get; set; }
     private void GenerateShortPressBubble()
+    {
+        if (_currentBubbleCount >= _stats.MaxBubbleCount) return;
+        BubbleJustCreated = true; // 触发动画
+        StartCoroutine(GenerateShortPressBubble_Amination());
+    }
+
+    private IEnumerator<WaitForSeconds> GenerateShortPressBubble_Amination()
+    {
+        yield return new WaitForSeconds(1.5f); // 等待动画时长
+        BubbleJustCreated = false; // 动画结束
+        GenerateShortPressBubble_Internal();
+    }
+
+    private void GenerateShortPressBubble_Internal()
     {
         if (bubblePrefab == null || _currentBubbleCount >= _stats.MaxBubbleCount) return;
 
@@ -562,6 +561,7 @@ public class PlayerController : MonoBehaviour, IPlayerController
             controller.initialPlayerState(PlayerState.InsideBubble);
             _currentBubbleCount++;
             StartCoroutine(DestroyBubbleAfterDelay(bubble));
+            BubbleJustCreated = true; 
         }
     }
 

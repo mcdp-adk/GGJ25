@@ -17,13 +17,11 @@ public class GameManager : MonoBehaviour
 
     #region Public Methods
 
-    // 获取 Player 对象
     public GameObject GetPlayer()
     {
         return player;
     }
 
-    // 销毁传入的 GameObject 对象
     public void DestroyGameObject(GameObject obj)
     {
         if (obj != null)
@@ -44,8 +42,7 @@ public class GameManager : MonoBehaviour
 
     public void RespawnPlayer()
     {
-        ShakeCamera(10f, 0.1f);
-        // 销毁所有带有“GeneratedBubble”标签的物体
+        ShakeCamera(10f, 0.1f); 
         GameObject[] bubbles = GameObject.FindGameObjectsWithTag("GeneratedBubble");
         foreach (GameObject bubble in bubbles)
         {
@@ -82,25 +79,27 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (cameraShakeTimer > 0)
+        var playerObj = GetPlayer();
+        if (playerObj != null)
         {
-            // The first 20% of the shake time is linear increase
-            // The last 80% of the shake time is linear decrease
-            cameraShakeTimer -= Time.deltaTime;
-            if (cameraShakeTimer > cameraShakeTime * 0.2f)
+            if (cameraShakeTimer > 0)
             {
-                float shakeIntensity = (float)(cameraShakeIntensity * (0.4 + 0.6 * (cameraShakeTimer / cameraShakeTime)));
-                virtualCameraNoise.m_AmplitudeGain = shakeIntensity;
-            }
-            else
-            {
-                float shakeIntensity = (float)(cameraShakeIntensity * (1 - (cameraShakeTimer / cameraShakeTime)));
-                virtualCameraNoise.m_AmplitudeGain = shakeIntensity;
-            }
-            if (cameraShakeTimer < 0)
-            {
-                virtualCameraNoise.m_AmplitudeGain = 0;
-                virtualCameraNoise.m_FrequencyGain = 0f; 
+                cameraShakeTimer -= Time.deltaTime;
+                if (cameraShakeTimer > cameraShakeTime * 0.2f)
+                {
+                    float shakeIntensity = (float)(cameraShakeIntensity * (0.4 + 0.6 * (cameraShakeTimer / cameraShakeTime)));
+                    virtualCameraNoise.m_AmplitudeGain = shakeIntensity;
+                }
+                else
+                {
+                    float shakeIntensity = (float)(cameraShakeIntensity * (1 - (cameraShakeTimer / cameraShakeTime)));
+                    virtualCameraNoise.m_AmplitudeGain = shakeIntensity;
+                }
+                if (cameraShakeTimer < 0)
+                {
+                    virtualCameraNoise.m_AmplitudeGain = 0;
+                    virtualCameraNoise.m_FrequencyGain = 0f; 
+                }
             }
         }
     }
@@ -109,12 +108,12 @@ public class GameManager : MonoBehaviour
 
     #region Private Methods
 
-    private void SpawnAtPoint()
+    void SpawnAtPoint()
     {
         if (spawnPoint != null && spawnPlayer != null)
         {
             player = Instantiate(spawnPlayer, spawnPoint.position, spawnPoint.rotation);
-            virtualCamera.Follow = player.transform; // 设置虚拟相机追踪角色
+            virtualCamera.Follow = player.transform; 
         }
     }
 
