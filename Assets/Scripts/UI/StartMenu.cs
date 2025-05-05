@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
 
     void StartGame()
     {
-        SceneManager.LoadScene("MainGame"); // 替换为您的游戏场景名称
+        SceneManager.LoadScene("Game 1"); // 加载游戏场景
     }
 
     void ShowCredits()
