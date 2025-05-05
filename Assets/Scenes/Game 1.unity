@@ -2000,7 +2000,7 @@ GameObject:
   - component: {fileID: 930490253}
   - component: {fileID: 930490252}
   m_Layer: 0
-  m_Name: BubbleManager
+  m_Name: Bubble Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197007,7 +197007,7 @@ GameObject:
   - component: {fileID: 964046170}
   - component: {fileID: 964046169}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Finish Zone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197144,7 +197144,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &964046173
@@ -197457,7 +197457,7 @@ SpriteRenderer:
   m_Size: {x: 2, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1026365664
@@ -197781,7 +197781,7 @@ GameObject:
   - component: {fileID: 1322326215}
   - component: {fileID: 1322326214}
   m_Layer: 0
-  m_Name: AudioManager
+  m_Name: Audio Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197923,7 +197923,7 @@ GameObject:
   - component: {fileID: 1560928571}
   - component: {fileID: 1560928570}
   m_Layer: 0
-  m_Name: EventSystem
+  m_Name: Event System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199048,7 +199048,7 @@ GameObject:
   - component: {fileID: 1884170262}
   - component: {fileID: 1884170261}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: Game Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
