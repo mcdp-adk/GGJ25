@@ -42,6 +42,15 @@ TagManager:
   - name: background
     uniqueID: 1933571103
     locked: 0
+  - name: background lowood
+    uniqueID: 3886078399
+    locked: 0
+  - name: background wood
+    uniqueID: 2009317083
+    locked: 0
+  - name: background bush
+    uniqueID: 1644710279
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
